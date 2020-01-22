@@ -16,7 +16,7 @@
 
         <!-- App title -->
 
-        <title>Admin Panel</title>
+        <title>Employee Tracking System</title>
 
 
 

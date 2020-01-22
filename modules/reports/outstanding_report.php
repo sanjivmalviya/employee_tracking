@@ -2,8 +2,8 @@
 
  require_once('../../functions.php');
 
- $login_id = $_SESSION['nb_credentials']['user_id'];
- $login_type = $_SESSION['nb_credentials']['user_type'];
+ $login_id = $_SESSION['ets_credentials']['user_id'];
+ $login_type = $_SESSION['ets_credentials']['user_type'];
  
  $customers = "SELECT * FROM tbl_customer WHERE added_by = '$login_id' ";
  $customers = getRaw($customers);

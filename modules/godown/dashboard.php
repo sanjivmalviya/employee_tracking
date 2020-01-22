@@ -2,7 +2,7 @@
     
    require_once('../../functions.php'); 
 
-   $godown_id = $_SESSION['nb_credentials']['user_id'];
+   $godown_id = $_SESSION['ets_credentials']['user_id'];
 
    $total_orders = count(getWhere('tbl_orders','godown_id',$godown_id));
    $total_invoices = getRaw('SELECT IFNULL(COUNT(*),0) as total_invoices FROM tbl_invoices inv INNER JOIN tbl_orders ord ON inv.order_id = ord.order_id WHERE ord.godown_id = '.$godown_id.' ');

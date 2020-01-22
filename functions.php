@@ -1,61 +1,25 @@
 <?php
 
-error_reporting(1);
-session_start();
-date_default_timezone_set('Asia/Kolkata');
-$timestamp = date('Y-m-d h:i:s');
-$baseurl = "http://".$_SERVER['SERVER_NAME']."/nikki_bites";
- // $baseurl = "http://".$_SERVER['SERVER_NAME']."";
-define('ROOT',$baseurl);
-define('APPPATH',$_SERVER['DOCUMENT_ROOT']."/nikki_bites");
- // define('APPPATH',$_SERVER['DOCUMENT_ROOT']."");
-define('DB',"nikki_bites");
-
-// database connection
+require_once "config.php"; 
 
 function connect(){
 
-    $host = 'localhost';
-
-    $user = 'root';
-
-    $password = '';
-
-    // $host = 'localhost';
-
-    // $user = 'nikki_bites';
-
-    // $password = 'S*o_e5qWoFDT';
-
-    $db = DB;
-
-    $connect = mysqli_connect($host,$user,$password,$db);
-
+    $connect = mysqli_connect(HOST,USER,PASS,DB);
     return $connect;
 
-}
-
-
+} 
 
 function last_id($table,$field_name){
 
-
-
     $connect = connect();
-
-
 
     $getLastId = "SELECT IFNULL(MAX($field_name),0) as last_id FROM $table";
 
     $getLastId = mysqli_query($connect,$getLastId);
 
     $getLastId = mysqli_fetch_assoc($getLastId);
-
-
-
+    
     return $getLastId['last_id'];
-
-
 
 }
 
@@ -70,7 +34,6 @@ function insert($table,$form_data){
     $connect = connect();
 
     
-
     // retrieve the keys of the array (column titles)
 
     $fields = array_keys($form_data);
@@ -96,10 +59,7 @@ function insert($table,$form_data){
 function update($table,$field_name,$field_value,$form_data) {
 
     $set = '';
-
     $x = 1;
-
-
 
     foreach($form_data as $name => $value) {
 
@@ -135,13 +95,8 @@ function update($table,$field_name,$field_value,$form_data) {
 
 function sanitize($value){
 
-    
-
     $connect = connect();
-
     return mysqli_real_escape_string($connect,$value);
-
-
 
 }
 
@@ -594,19 +549,11 @@ function getCount($table,$delete_status=""){
 
 
 
-function getCountWhere($table,$condition){
-
-
+function getCountWhere($query){
 
     $connect = connect();
 
-
-
-    $get = "SELECT * FROM $table WHERE $condition ";
-
-    if($get = mysqli_query($connect,$get)){
-
-                        
+    if($get = mysqli_query($connect,$query)){
 
         $get = mysqli_num_rows($get);
 
@@ -694,11 +641,7 @@ function getWhere($table,$where,$field){
 
 function getRaw($query){
 
-
-
         $connect = connect();
-
-
 
         $get = mysqli_query($connect,$query);
 
@@ -716,8 +659,6 @@ function getRaw($query){
 
         }
 
-
-
         return $data;
 
 }
@@ -729,10 +670,7 @@ function getRaw($query){
 function getAll($table){
 
 
-
         $connect = connect();
-
-
 
         $query = "SELECT * FROM $table";
 

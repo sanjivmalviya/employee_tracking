@@ -3,9 +3,9 @@
 
    require_once('../../functions.php');
 
-   $login_id = $_SESSION['nb_credentials']['user_id'];
+   $login_id = $_SESSION['ets_credentials']['user_id'];
 
-  if($_SESSION['nb_credentials']['user_type'] == 2){
+  if($_SESSION['ets_credentials']['user_type'] == 2){
 
       $customers = getWhere('tbl_customer','added_by',$login_id);
 

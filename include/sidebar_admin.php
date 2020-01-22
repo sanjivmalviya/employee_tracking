@@ -2,7 +2,7 @@
 
     require_once('../../functions.php'); 
 
-    $this_admin_roles = getWhere('tbl_user_roles','admin_id',$_SESSION["nb_credentials"]['user_id']);
+    $this_admin_roles = getWhere('tbl_user_roles','admin_id',$_SESSION["ets_credentials"]['user_id']);
 
     if(isset($this_admin_roles) && count($this_admin_roles) > 0){
 
@@ -53,14 +53,14 @@
                                     <li><a href="../../modules/masters/expenses.php">Expense Category</a></li>
                                 </ul>
                             </li>
-
+<!-- 
                              <li class="has_sub">
                                 <a href="javascript:void(0);" class="waves-effect"><i class="ti-target"></i><span> Assign Target </span> <span class="menu-arrow"></span></a>
                                 <ul class="list-unstyled">
                                     <li><a href="../../modules/target/add.php">Create New Target</a></li>
                                     <li><a href="../../modules/target/view.php">View</a></li>
                                 </ul>
-                            </li>
+                            </li> -->
 
 
                             <?php if(isset($sidebar_modules) && count($sidebar_modules) > 0){ ?>

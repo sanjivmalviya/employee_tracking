@@ -11,7 +11,7 @@
         session_destroy();
         session_start();
 
-        $_SESSION['nb_credentials'] = array(
+        $_SESSION['ets_credentials'] = array(
             'user_type' => 2,
             'user_id' => $admin['admin_id'],
             'user_name' => $admin['admin_name'],
@@ -46,7 +46,7 @@
 
             $session_data = getOne('tbl_super_admin','username',$username);
             
-            $_SESSION['nb_credentials'] = array(
+            $_SESSION['ets_credentials'] = array(
                 'user_type' => $user_type,
                 'user_id' => $session_data['super_admin_id'],
                 'user_name' => $username,
@@ -61,7 +61,7 @@
         }else{
             
             $error = "Invalid Username or Password";
-            unset($_SESSION['nb_credentials']);
+            unset($_SESSION['ets_credentials']);
 
         }
 
@@ -74,7 +74,7 @@
 
             $session_data = getOne('tbl_admins','admin_email',$username);
             
-            $_SESSION['nb_credentials'] = array(
+            $_SESSION['ets_credentials'] = array(
                 'user_type' => $user_type,
                 'user_id' => $session_data['admin_id'],
                 'user_name' => $username,
@@ -85,7 +85,7 @@
         }else{
             
             $error = "Invalid Username or Password";
-            unset($_SESSION['nb_credentials']);
+            unset($_SESSION['ets_credentials']);
 
         }
 
@@ -98,7 +98,7 @@
 
             $session_data = getOne('tbl_godown','godown_email',$username);
             
-            $_SESSION['nb_credentials'] = array(
+            $_SESSION['ets_credentials'] = array(
                 'user_type' => $user_type,
                 'user_id' => $session_data['godown_id'],
                 'user_name' => $username,
@@ -109,7 +109,7 @@
         }else{
             
             $error = "Invalid Username or Password";
-            unset($_SESSION['nb_credentials']);
+            unset($_SESSION['ets_credentials']);
 
         }
 
@@ -122,7 +122,7 @@
 
             $session_data = getOne('tbl_customer','customer_email',$username);
             
-            $_SESSION['nb_credentials'] = array(
+            $_SESSION['ets_credentials'] = array(
                 'user_type' => $user_type,
                 'user_id' => $session_data['customer_id'],
                 'user_name' => $username,
@@ -133,7 +133,7 @@
         }else{
             
             $error = "Invalid Username or Password";
-            unset($_SESSION['nb_credentials']);
+            unset($_SESSION['ets_credentials']);
 
         }
 

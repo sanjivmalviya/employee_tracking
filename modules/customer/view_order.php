@@ -2,8 +2,8 @@
 
  require_once('../../functions.php');
 
- $login_id = $_SESSION['nb_credentials']['user_id'];
- $login_type = $_SESSION['nb_credentials']['user_type'];
+ $login_id = $_SESSION['ets_credentials']['user_id'];
+ $login_type = $_SESSION['ets_credentials']['user_type'];
 
  $orders = getRaw('SELECT * FROM tbl_orders WHERE user_type = "4" AND user_id = '.$login_id.' ');
 

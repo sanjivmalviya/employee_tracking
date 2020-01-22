@@ -2,29 +2,21 @@
     
    require_once('../../functions.php'); 
 
-   $admin_id = $_SESSION['nb_credentials']['user_id'];
+   $admin_id = $_SESSION['ets_credentials']['user_id'];
 
-   $total_orders = count(getAll("SELECT * FROM tbl_orders ord INNER JOIN tbl_customer cust ON ord.user_id = cust.customer_id WHERE cust.added_by = ".$admin_id." "));
-    
-   // $total_distributers = count(getWhere('tbl_customer','status','1'));
-   $total_distributers = 'SELECT * FROM tbl_customer WHERE status = "1" AND added_by = '.$admin_id.' ';
-   $total_distributers = count(getRaw($total_distributers)); 
-    
-   $total_invoices = getRaw("SELECT IFNULL(COUNT(*),0) as total_invoices FROM tbl_orders ord INNER JOIN tbl_customer cust ON ord.user_id = cust.customer_id INNER JOIN tbl_invoices inv ON inv.order_id = ord.order_id WHERE cust.added_by = ".$admin_id." AND ord.order_dispatch_status = '0' ");
-   $total_invoices = $total_invoices[0]['total_invoices'];
+   $total_orders = getCountWhere("SELECT * FROM tbl_orders ord INNER JOIN tbl_customer cust ON ord.user_id = cust.customer_id WHERE cust.added_by = ".$admin_id." ");
+   $total_customers = getCountWhere('SELECT * FROM tbl_customer WHERE status = "1" AND added_by = '.$admin_id.' '); 
 
-   $total_employees = count(getRaw('SELECT * FROM tbl_employees WHERE status = "1" AND added_by = "'.$admin_id.'" '));
+   $total_invoices = getCountWhere("SELECT * FROM tbl_orders ord INNER JOIN tbl_customer cust ON ord.user_id = cust.customer_id INNER JOIN tbl_invoices inv ON inv.order_id = ord.order_id WHERE cust.added_by = ".$admin_id." AND ord.order_dispatch_status = '0' ");
 
-   $total_pending_orders = count(getRaw("SELECT * FROM tbl_orders ord INNER JOIN tbl_customer cust ON ord.user_id = cust.customer_id WHERE cust.added_by = ".$admin_id." order_dispatch_status = '0' "));
-   $total_partial_orders = count(getRaw("SELECT * FROM tbl_orders ord INNER JOIN tbl_customer cust ON ord.user_id = cust.customer_id WHERE cust.added_by = ".$admin_id." order_dispatch_status = '1' "));
-   $total_dispatched_orders = count(getRaw("SELECT * FROM tbl_orders ord INNER JOIN tbl_customer cust ON ord.user_id = cust.customer_id WHERE cust.added_by = ".$admin_id." order_dispatch_status = '2' "));
+   $total_employees = getCountWhere('SELECT * FROM tbl_employees WHERE status = "1" AND added_by = "'.$admin_id.'" ');
    
-   $today_orders = " ";
-   $today_orders = count(getRaw($today_orders));
-
-   $today_invoices = "SELECT * FROM tbl_invoices WHERE DATE(created_at) = DATE(NOW())";
-   $today_invoices = count(getRaw($today_invoices));
-
+   $total_pending_orders = getCountWhere("SELECT * FROM tbl_orders ord INNER JOIN tbl_customer cust ON ord.user_id = cust.customer_id WHERE cust.added_by = ".$admin_id." order_dispatch_status = '0' ");
+   $total_partial_orders = getCountWhere("SELECT * FROM tbl_orders ord INNER JOIN tbl_customer cust ON ord.user_id = cust.customer_id WHERE cust.added_by = ".$admin_id." order_dispatch_status = '1' ");
+   $total_dispatched_orders = getCountWhere("SELECT * FROM tbl_orders ord INNER JOIN tbl_customer cust ON ord.user_id = cust.customer_id WHERE cust.added_by = ".$admin_id." order_dispatch_status = '2' ");
+   
+   $today_orders = getCountWhere("SELECT * FROM tbl_orders WHERE DATE(created_at) = DATE(NOW())");
+   $today_invoices = getCountWhere("SELECT * FROM tbl_invoices WHERE DATE(created_at) = DATE(NOW())");
 
 ?>
 
@@ -224,11 +216,18 @@ section .section-title {
     top: 65px;
     font-style: italic;
     text-transform: capitalize;
-    opacity: 0.5;
+    opacity: 0.6;
     display: block;
     font-size: 18px;
+    font-weight: bold;
   }
-   </style>
+
+  .bg-default{
+    background: #36404e !important;
+  }
+
+</style>
+
 <body class="fixed-left">
         <!-- Begin page -->
         <div id="wrapper">
@@ -267,15 +266,15 @@ section .section-title {
                          <div class="row">
 
                         <div class="col-md-3">
-                          <div class="card-counter primary">
+                          <div class="card-counter btn-default">
                             <i class="fa fa-circle-o-notch"></i>
-                            <span class="count-numbers"><?php echo $total_distributers; ?></span>
-                            <span class="count-name"><b>Total Distributers</b></span>
+                            <span class="count-numbers"><?php echo $total_customers; ?></span>
+                            <span class="count-name"><b>Total customers</b></span>
                           </div>
                         </div>
 
                         <div class="col-md-3">
-                          <div class="card-counter primary">
+                          <div class="card-counter btn-default">
                             <i class="fa fa-circle-o-notch"></i>
                             <span class="count-numbers"><?php echo $today_orders; ?></span>
                             <span class="count-name"><b>Today's Orders</b></span>
@@ -283,7 +282,7 @@ section .section-title {
                         </div>
 
                         <div class="col-md-3">
-                          <div class="card-counter primary">
+                          <div class="card-counter btn-default">
                             <i class="fa fa-circle-o-notch"></i>
                             <span class="count-numbers"><?php echo $today_invoices; ?></span>
                             <span class="count-name"><b>Today's Invoices</b></spanx>
@@ -291,7 +290,7 @@ section .section-title {
                         </div>
 
                         <div class="col-md-3">
-                          <div class="card-counter primary">
+                          <div class="card-counter btn-default">
                             <i class="fa fa-circle-o-notch"></i>
                             <span class="count-numbers"><?php echo $total_orders; ?></span>
                             <span class="count-name"><b>Total Orders</b></span>
@@ -300,7 +299,7 @@ section .section-title {
 
 
                          <div class="col-md-3">
-                          <div class="card-counter primary">
+                          <div class="card-counter btn-default">
                             <i class="fa fa-circle-o-notch"></i>
                             <span class="count-numbers"><?php echo $total_pending_orders; ?></span>
                             <span class="count-name"><b>Total Pending Orders</b></span>
@@ -308,7 +307,7 @@ section .section-title {
                         </div>
 
                         <div class="col-md-3">
-                          <div class="card-counter primary">
+                          <div class="card-counter btn-default">
                             <i class="fa fa-circle-o-notch"></i>
                             <span class="count-numbers"><?php echo $total_partial_orders; ?></span>
                             <span class="count-name"><b>Total Partial Order</b></span>
@@ -316,14 +315,14 @@ section .section-title {
                         </div>
 
                         <div class="col-md-3">
-                          <div class="card-counter primary">
+                          <div class="card-counter btn-default">
                             <i class="fa fa-circle-o-notch"></i>
                             <span class="count-numbers"><?php echo $total_dispatched_orders; ?></span>
                             <span class="count-name"><b>Total Dispatched Orders</b></span>
                           </div>
                         </div>
                         <div class="col-md-3">
-                          <div class="card-counter primary">
+                          <div class="card-counter btn-default">
                             <i class="fa fa-circle-o-notch"></i>
                             <span class="count-numbers"><?php echo $total_invoices; ?></span>
                             <span class="count-name"><b>Total Invoices</b></spanx>
@@ -331,7 +330,7 @@ section .section-title {
                         </div>
 
                         <div class="col-md-3">
-                          <div class="card-counter primary">
+                          <div class="card-counter btn-default">
                             <i class="fa fa-circle-o-notch"></i>
                             <span class="count-numbers"><?php echo $total_employees; ?></span>
                             <span class="count-name"><b>Total Employees</b></span>

@@ -3,7 +3,7 @@
 
    require_once('../../functions.php');
 
-   $login_id = $_SESSION['nb_credentials']['user_id'];
+   $login_id = $_SESSION['ets_credentials']['user_id'];
 
    $table_name = 'tbl_employees';
 
@@ -318,7 +318,7 @@ if(isset($_POST['update'])){
 
    $allowed_extensions = array('jpg','jpeg','png','gif','pdf');
 
-   $target_path = ROOT."/uploads/aadhaar/";
+   $target_path = FILEPATH."/uploads/aadhaar/";
 
    $file_prefix = "IMG_";
 

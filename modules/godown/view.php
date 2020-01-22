@@ -2,9 +2,9 @@
 
    require_once('../../functions.php');
 
- $login_id = $_SESSION['nb_credentials']['user_id'];
+ $login_id = $_SESSION['ets_credentials']['user_id'];
 
- if($_SESSION['nb_credentials']['user_type'] == 1){   
+ if($_SESSION['ets_credentials']['user_type'] == 1){   
    $godowns = getAll('tbl_godown');
  }else{
    $godowns = getWhere('tbl_godown','added_by',$login_id);
@@ -61,7 +61,7 @@ if(delete($table_name,$field_name,$_GET['delete_id'])){
                                     
                                     <thead>
                                        <th>Sr.</th>
-                                       <?php if($_SESSION['nb_credentials']['user_type'] == 1){ ?>
+                                       <?php if($_SESSION['ets_credentials']['user_type'] == 1){ ?>
                                        <th>Added By</th>
                                        <?php } ?>
                                        <th>Person Name</th>
@@ -83,7 +83,7 @@ if(delete($table_name,$field_name,$_GET['delete_id'])){
 
                                           <tr>
                                              <td><?php echo $i++; ?></td>
-                                             <?php if($_SESSION['nb_credentials']['user_type'] == 1){ ?>
+                                             <?php if($_SESSION['ets_credentials']['user_type'] == 1){ ?>
                                              <td><?php 
                                               $added_by = getOne('tbl_admins','admin_id',$rs['added_by']); 
                                               echo $added_by['admin_name'];

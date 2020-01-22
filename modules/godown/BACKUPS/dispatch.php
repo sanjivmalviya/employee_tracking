@@ -2,7 +2,7 @@
 
 require_once('../../functions.php');
 
-$login_id = $_SESSION['nb_credentials']['user_id'];
+$login_id = $_SESSION['ets_credentials']['user_id'];
 
 $order_id = $_GET['order_id'];
 $orders = getWhere('tbl_order_detail','order_id',$order_id);

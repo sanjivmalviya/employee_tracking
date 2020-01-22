@@ -2,8 +2,8 @@
 
  require_once('../../functions.php'); 
 
- $login_id = $_SESSION['nb_credentials']['user_id'];
- $login_type = $_SESSION['nb_credentials']['user_type'];
+ $login_id = $_SESSION['ets_credentials']['user_id'];
+ $login_type = $_SESSION['ets_credentials']['user_type'];
 
 
  if($login_type == 3){
@@ -128,15 +128,15 @@
 
                                        <th>Billing Rate</th>
 
-                                       <th>GST</th>
+                                       <th>GST (%)</th>
 
                                        <th>HSN Code</th>
 
-                                       <th>Batch Number</th>
+                                       <!-- <th>Batch Number</th> -->
 
                                        <th>Discount</th>
 
-                                       <th>Unit</th>
+                                       <!-- <th>Unit</th> -->
 
                                        <?php if($login_type != 3){ ?>
 
@@ -199,7 +199,7 @@
 
                                              <td><?php echo $rs['product_hsn_code']; ?></td>                                    
 
-                                             <td><?php echo $rs['product_batch_number']; ?></td>                                    
+                                             <!-- <td><?php echo $rs['product_batch_number']; ?></td>                                     -->
 
                                              <td>
 
@@ -214,7 +214,7 @@
                                                 ?>
                                                 
                                              </td>                                    
-
+<!-- 
                                              <td>
 
                                                 <?php 
@@ -226,7 +226,7 @@
                                                 ?>                                                   
 
                                              </td>
-
+ -->
                                              <?php if($login_type != 3){ ?>
                                              <td>
 

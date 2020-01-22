@@ -2,7 +2,7 @@
 
     require_once('../../functions.php');
     
-    $login_id = $_SESSION['nb_credentials']['user_id'];
+    $login_id = $_SESSION['ets_credentials']['user_id'];
     $this_admin = getOne('tbl_admins','admin_id',$login_id);
 
     // $where = array(
@@ -22,7 +22,7 @@
 
                 <!-- LOGO -->
                 <div class="topbar-left">
-                    <a href="dashboard.php" class="logo"><span>Nikki<span>Bites</span></span><i class="mdi mdi-layers"></i></a>
+                    <a href="dashboard.php" class="logo"><span>ETS</span></span><i class="mdi mdi-layers"></i></a>
                 </div>
 
                 <!-- Button mobile view to collapse sidebar menu -->
@@ -62,7 +62,7 @@
                                
                             </li> -->
 
-                            <?php if(isset($_SESSION['nb_credentials']['access_call'])){ ?>
+                            <?php if(isset($_SESSION['ets_credentials']['access_call'])){ ?>
                                 
                                 <li class="dropdown user-box">
                                 <a href="../../modules/owner/dashboard.php?superadmin=1" class="btn btn-danger waves-effect user-link">
@@ -80,7 +80,7 @@
                                 
                                 <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
                                     <li>
-                                        <h5>Hi, <?php echo $_SESSION["nb_credentials"]['user_name']; ?></h5>
+                                        <h5>Hi, <?php echo $_SESSION["ets_credentials"]['user_name']; ?></h5>
                                     </li>                                   
                                     <li><a href="../../modules/login/backup.php"><i class="ti-power-off m-r-5"></i>Backup Now</a></li>
                                     <li><a href="../../modules/login/logout.php"><i class="ti-power-off m-r-5"></i> Logout</a></li>

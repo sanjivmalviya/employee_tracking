@@ -43,7 +43,7 @@
 
          $connect = connect();
 
-         $state_name = sanitize($_POST['state_name']);
+         $city_name = sanitize($_POST['city_name']);
 
          if(isExists('tbl_city','city_name',$city_name)){
 

@@ -2,7 +2,7 @@
 
 require_once('../../functions.php');
 
-$login_id = $_SESSION['nb_credentials']['user_id'];
+$login_id = $_SESSION['ets_credentials']['user_id'];
 
 $orders = "SELECT * FROM tbl_orders ord INNER JOIN tbl_godown godown ON ord.godown_id = godown.godown_id WHERE godown.godown_id = '$login_id' AND ord.order_approve_status = '1'";
 

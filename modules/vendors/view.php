@@ -6,9 +6,9 @@
 
 
 
- $login_id = $_SESSION['nb_credentials']['user_id'];
+ $login_id = $_SESSION['ets_credentials']['user_id'];
 
- $login_type = $_SESSION['nb_credentials']['user_type'];
+ $login_type = $_SESSION['ets_credentials']['user_type'];
 
  $table_name = 'tbl_vendors';
  $field_name = 'vendor_id';

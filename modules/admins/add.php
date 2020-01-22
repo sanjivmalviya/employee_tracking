@@ -5,6 +5,7 @@
 
    $states = getAll('tbl_state');
 
+
    if(isset($_POST['submit'])){
 
      // POST DATA
@@ -66,10 +67,8 @@
       
    }
 
-   if(isset($_GET['admin_id'])&& $_GET['admin_id'] != ''){
-
-          $adminDetail = getOne('tbl_admins','admin_id',$_GET['admin_id']);
-
+   if(isset($_GET['admin_id']) && $_GET['admin_id'] != ''){
+      $adminDetail = getOne('tbl_admins','admin_id',$_GET['admin_id']);
    }
 
    if(isset($_POST['update'])){
@@ -165,7 +164,7 @@
 
                                                 <?php foreach($states as $rs){ ?>
 
-                                                   <option <?php if($adminDetail['admin_state'] == $rs['state_id']){ echo "selected"; } ?> value="<?php echo $rs['state_id']; ?>"><?php echo $rs['state_name']; ?></option>
+                                                   <option <?php if( isset($adminDetail) && $adminDetail['admin_state'] == $rs['state_id']){ echo "selected"; } ?> value="<?php echo $rs['state_id']; ?>"><?php echo $rs['state_name']; ?></option>
 
                                                 <?php } ?>
 

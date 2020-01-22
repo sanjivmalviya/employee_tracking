@@ -2,7 +2,7 @@
     
     require_once('../../functions.php');
     
-    unset($_SESSION['nb_credentials']);
+    unset($_SESSION['ets_credentials']);
     header('location:../../modules/login/index.php');
 
 ?>

@@ -2,7 +2,7 @@
     
    require_once('../../functions.php'); 
 
-   $customer_id = $_SESSION['nb_credentials']['user_id'];
+   $customer_id = $_SESSION['ets_credentials']['user_id'];
 
    $total_orders = count(getWhere('tbl_orders','user_id',$customer_id));
    $today_orders = "SELECT * FROM tbl_orders WHERE user_id = '$customer_id' AND DATE(created_at) = DATE(NOW())";

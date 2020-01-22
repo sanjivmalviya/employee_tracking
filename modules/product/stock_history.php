@@ -2,7 +2,7 @@
 
 require_once('../../functions.php');
 
-$login_id = $_SESSION['nb_credentials']['user_id'];
+$login_id = $_SESSION['ets_credentials']['user_id'];
 
 $product_id = $_GET['product_id'];
 $stock_history = "SELECT * FROM tbl_product_stock_history WHERE product_id = '$product_id' ";

@@ -2,7 +2,7 @@
 
    require_once('../../functions.php');
 
-   $login_id = $_SESSION['nb_credentials']['user_id'];
+   $login_id = $_SESSION['ets_credentials']['user_id'];
    $states = getAll('tbl_state');
 
    $owner = getAll('tbl_owner');
@@ -20,7 +20,6 @@
 		$old_owner_email = $owner[0]['owner_email'];
 		$old_owner_mobile = $owner[0]['owner_mobile'];
       $old_owner_company_pan_number = $owner[0]['owner_company_pan_number'];
-      $old_owner_company_fssi_number = $owner[0]['owner_company_fssi_number'];
       $old_owner_bank_name = $owner[0]['owner_bank_name'];
       $old_owner_bank_account_number = $owner[0]['owner_bank_account_number'];
       $old_owner_bank_ifsc = $owner[0]['owner_bank_ifsc'];
@@ -43,7 +42,6 @@
 				'owner_email' => $_POST['owner_email'],
 				'owner_mobile' => $_POST['owner_mobile'],
             'owner_company_pan_number' => $_POST['owner_company_pan_number'],
-            'owner_company_fssi_number' => $_POST['owner_company_fssi_number'],
             'owner_bank_name' => $_POST['owner_bank_name'],
             'owner_bank_account_number' => $_POST['owner_bank_account_number'],
             'owner_bank_ifsc' => $_POST['owner_bank_ifsc'],
@@ -90,14 +88,14 @@
             <!-- Start content -->
             <div class="content">
                <div class="container">
-                   <div class="row">
+<!--                    <div class="row">
                      <div class="col-md-6">
                         <div class="page-title-box">
                            <h4 class="page-title">Company Profile</h4>
-                           <div class="clearfix"></div>
+                           
                         </div>
                      </div>                   
-                  </div>
+                  </div> -->
                   <div class="row">   
                      
                      <div class="col-sm-12">
@@ -106,6 +104,12 @@
                                <form method="post" class="form-horizontal" enctype="multipart/form-data">
                                  <div class="col-md-12">
                                     <div class="row">
+
+                                       <div class="col-md-12 text-center">
+                                       <hr> 
+                                       <h5 class="text-uppercase"><u>Company Details:</u></h5>
+                                       <hr> 
+                                       </div>
 
                                     	<div class="col-md-4">
                                           <div class="form-group">
@@ -180,45 +184,48 @@
 
                                        <div class="col-md-4">
                                           <div class="form-group">
-                                             <label for="owner_company_pan_number">Company's PAN<span class="text-danger">*</span></label>
-                                             <input type="text" name="owner_company_pan_number" parsley-trigger="change" required="" placeholder="" class="form-control" id="owner_company_pan_number" value="<?php if(isset($old_owner_company_pan_number)){ echo $old_owner_company_pan_number; } ?>">
+                                             <label for="owner_company_pan_number">Company's PAN</label>
+                                             <input type="text" name="owner_company_pan_number" parsley-trigger="change" placeholder="" class="form-control" id="owner_company_pan_number" value="<?php if(isset($old_owner_company_pan_number)){ echo $old_owner_company_pan_number; } ?>">
                                           </div>
                                        </div>  
 
                                        <div class="col-md-4">
                                           <div class="form-group">
-                                             <label for="owner_company_fssi_number">FSSI Number<span class="text-danger">*</span></label>
-                                             <input type="text" name="owner_company_fssi_number" parsley-trigger="change" required="" placeholder="" class="form-control" id="owner_company_fssi_number" value="<?php if(isset($old_owner_company_fssi_number)){ echo $old_owner_company_fssi_number; } ?>">
+                                             <label for="owner_gst">GST Number </label>
+                                             <input type="text" name="owner_gst" parsley-trigger="change" placeholder="" class="form-control" id="owner_gst" value="<?php if(isset($old_owner_gst)){ echo $old_owner_gst; } ?>">
                                           </div>
-                                       </div>  
+                                       </div>              
 
-                                       <div class="col-md-4">
-                                          <div class="form-group">
-                                             <label for="owner_bank_name">Bank Name<span class="text-danger">*</span></label>
-                                             <input type="text" name="owner_bank_name" parsley-trigger="change" required="" placeholder="" class="form-control" id="owner_bank_name" value="<?php if(isset($old_owner_bank_name)){ echo $old_owner_bank_name; } ?>">
-                                          </div>
-                                       </div>     
+                                       <div class="clearfix"></div>  
 
-                                       <div class="col-md-4">
-                                          <div class="form-group">
-                                             <label for="owner_bank_account_number">Bank Account Number<span class="text-danger">*</span></label>
-                                             <input type="text" name="owner_bank_account_number" parsley-trigger="change" required="" placeholder="" class="form-control" id="owner_bank_account_number" value="<?php if(isset($old_owner_bank_account_number)){ echo $old_owner_bank_account_number; } ?>">
-                                          </div>
-                                       </div>     
-
-                                       <div class="col-md-4">
-                                          <div class="form-group">
-                                             <label for="owner_bank_ifsc">Bank IFSC <span class="text-danger">*</span></label>
-                                             <input type="text" name="owner_bank_ifsc" parsley-trigger="change" required="" placeholder="" class="form-control" id="owner_bank_ifsc" value="<?php if(isset($old_owner_bank_ifsc)){ echo $old_owner_bank_ifsc; } ?>">
-                                          </div>
+                                       <div class="col-md-12 text-center">
+                                       <hr> 
+                                       <h5 class="text-uppercase"><u>Banking Details:</u></h5>
+                                       <hr> 
                                        </div>
 
+
                                        <div class="col-md-4">
                                           <div class="form-group">
-                                             <label for="owner_gst">GST Number <span class="text-danger">*</span></label>
-                                             <input type="text" name="owner_gst" parsley-trigger="change" required="" placeholder="" class="form-control" id="owner_gst" value="<?php if(isset($old_owner_gst)){ echo $old_owner_gst; } ?>">
+                                             <label for="owner_bank_name">Bank Name</label>
+                                             <input type="text" name="owner_bank_name" parsley-trigger="change" placeholder="" class="form-control" id="owner_bank_name" value="<?php if(isset($old_owner_bank_name)){ echo $old_owner_bank_name; } ?>">
                                           </div>
-                                       </div>                                   
+                                       </div>     
+
+                                       <div class="col-md-4">
+                                          <div class="form-group">
+                                             <label for="owner_bank_account_number">Bank Account Number</label>
+                                             <input type="text" name="owner_bank_account_number" parsley-trigger="change" placeholder="" class="form-control" id="owner_bank_account_number" value="<?php if(isset($old_owner_bank_account_number)){ echo $old_owner_bank_account_number; } ?>">
+                                          </div>
+                                       </div>     
+
+                                       <div class="col-md-4">
+                                          <div class="form-group">
+                                             <label for="owner_bank_ifsc">Bank IFSC</label> 
+                                             <input type="text" name="owner_bank_ifsc" parsley-trigger="change" placeholder="" class="form-control" id="owner_bank_ifsc" value="<?php if(isset($old_owner_bank_ifsc)){ echo $old_owner_bank_ifsc; } ?>">
+                                          </div>
+                                       </div>
+ 
 
                                     </div>
 
@@ -234,7 +241,7 @@
                                        </div>      
 
                                        <div class="col-md-12" align="right">
-                                          <button type="submit" name="submit" id="submit" class="btn btn-primary btn-bordered waves-effect w-md waves-light m-b-5">Submit</button>
+                                          <button type="submit" name="submit" id="submit" class="btn btn-primary btn-bordered waves-effect w-md waves-light m-b-5">Save</button>
                                        </div>
                                     </div>
                                  </div>

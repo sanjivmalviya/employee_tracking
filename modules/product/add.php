@@ -8,7 +8,7 @@
 
 
 
-   $login_id = $_SESSION['nb_credentials']['user_id'];
+   $login_id = $_SESSION['ets_credentials']['user_id'];
 
 
 
@@ -24,7 +24,9 @@
 
    if(isset($_POST['submit'])){
 
-    
+    if(!isset($_POST['product_unit'])){
+      $_POST['product_unit'] = "";
+    }
 
     $form_data = array(
 
@@ -42,7 +44,7 @@
 
       'product_hsn_code' => $_POST['product_hsn_code'],
 
-      'product_batch_number' => $_POST['product_batch_number'],
+      // 'product_batch_number' => $_POST['product_batch_number'],
 
       'product_discount' => $_POST['product_discount'],
 
@@ -93,7 +95,7 @@
 
            'product_hsn_code' => $edit_data['product_hsn_code'],
 
-           'product_batch_number' => $edit_data['product_batch_number'],
+           // 'product_batch_number' => $edit_data['product_batch_number'],
 
            'product_discount' => $edit_data['product_discount'],
 
@@ -135,7 +137,7 @@
 
         'product_hsn_code' => $_POST['product_hsn_code'],
 
-        'product_batch_number' => $_POST['product_batch_number'],
+        // 'product_batch_number' => $_POST['product_batch_number'],
 
         'product_discount' => $_POST['product_discount'],
 
@@ -349,7 +351,7 @@
                                           </div>
 
                                        </div>
-                                       <div class="col-md-3">
+                                       <div class="col-md-6">
 
                                           <div class="form-group">
 
@@ -361,7 +363,7 @@
 
                                        </div>
 
-                                       <div class="col-md-3">
+                                       <div class="col-md-6">
 
                                           <div class="form-group">
 
@@ -374,7 +376,7 @@
                                        </div>
 
 
-                                       <div class="col-md-3">
+                                      <!--  <div class="col-md-3">
 
                                           <div class="form-group">
 
@@ -398,11 +400,11 @@
 
                                              </select>
 
-                                             <!-- <input type="text" name="product_unit" parsley-trigger="change" required=""  class="form-control" id="product_unit"> -->
-
+                                              <input type="text" name="product_unit" parsley-trigger="change" required=""  class="form-control" id="product_unit"> -->
+<!-- 
                                           </div>
 
-                                       </div>
+                                       </div> --> 
 
                                       
 

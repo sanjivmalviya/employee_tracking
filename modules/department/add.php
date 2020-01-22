@@ -3,7 +3,7 @@
 
    require_once('../../functions.php');
 
-   $login_id = $_SESSION['nb_credentials']['user_id'];
+   $login_id = $_SESSION['ets_credentials']['user_id'];
     
    if(isset($_POST['submit'])){
    

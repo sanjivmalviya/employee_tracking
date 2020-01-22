@@ -25,9 +25,9 @@
                                 <a href="../../modules/owner/owner.php" class="waves-effect"><i class="ti-user"></i><span> Company Profile </span> </a>
                             </li>
 
-                            <li>
+                        <!--     <li>
                                 <a href="../../modules/owner/assigned_targets.php" class="waves-effect"><i class="ti-target"></i><span> Assigned Targets </span> </a>
-                            </li>
+                            </li> -->
 
                             <!-- ONLY FOR DEVELOPER :START -->
 

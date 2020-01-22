@@ -2,7 +2,7 @@
 
  require_once('../../functions.php');
  
- $login_id = $_SESSION['nb_credentials']['user_id'];
+ $login_id = $_SESSION['ets_credentials']['user_id'];
  $sales_persons = getWhere('tbl_sales_person','added_by',$login_id);
 
 $order_numbers = "SELECT * FROM tbl_orders ord INNER JOIN tbl_sales_person sales ON ord.sales_person_id = sales.sales_person_id WHERE sales.added_by = '$login_id' ";

@@ -2,7 +2,7 @@
 
 require_once('../../functions.php');
 
-$login_id = $_SESSION['nb_credentials']['user_id'];
+$login_id = $_SESSION['ets_credentials']['user_id'];
 $order_detail_id = $_GET['order_detail_id'];
 
 if(!isset($order_detail_id) || !isExists('tbl_order_detail','order_detail_id',$order_detail_id)){

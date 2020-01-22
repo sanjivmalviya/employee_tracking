@@ -2,8 +2,8 @@
 
    require_once('../../functions.php');
 
-   $login_id = $_SESSION['nb_credentials']['user_id'];
-   $login_user_type = $_SESSION['nb_credentials']['user_type'];
+   $login_id = $_SESSION['ets_credentials']['user_id'];
+   $login_user_type = $_SESSION['ets_credentials']['user_type'];
 
    $products = getAll('tbl_product');
 

@@ -7,7 +7,7 @@
 
                 <!-- LOGO -->
                 <div class="topbar-left">
-                    <a href="dashboard.php" class="logo"><span>Nikki<span>Bites</span></span><i class="mdi mdi-layers"></i></a>
+                    <a href="dashboard.php" class="logo"><span>ETS</span></span><i class="mdi mdi-layers"></i></a>
                 </div>
 
                 <!-- Button mobile view to collapse sidebar menu -->
@@ -35,7 +35,7 @@
 
                                 <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
                                     <li>
-                                        <h5>Hi, <?php echo $_SESSION["nb_credentials"]['user_name']; ?></h5>
+                                        <h5>Hi, <?php echo $_SESSION["ets_credentials"]['user_name']; ?></h5>
                                     </li>                                   
                                     <li><a href="../../modules/owner/change_password.php"><i class="ti-settings m-r-5"></i> Change Password</a></li>
                                     <li><a href="../../modules/login/logout.php"><i class="ti-power-off m-r-5"></i> <span class="text-danger">Logout</span></a></li>

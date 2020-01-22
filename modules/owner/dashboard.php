@@ -3,7 +3,7 @@
 
    require_once('../../functions.php');
 
-   $login_id = $_SESSION['nb_credentials']['user_id'];
+   $login_id = $_SESSION['ets_credentials']['user_id'];
    $admins = getAll('tbl_admins');
 
    if(isset($_GET['superadmin']) && $_GET['superadmin'] == 1){
@@ -12,7 +12,7 @@
         session_destroy();
         session_start();
 
-        $_SESSION['nb_credentials'] = array(
+        $_SESSION['ets_credentials'] = array(
             'user_type' => 2,
             'user_id' => $super_admin['super_admin_id'],
             'user_name' => $super_admin['username'],
@@ -24,14 +24,12 @@
    }
 
    // total customers
-   $total_sales_persons = getCount('tbl_sales_person');
+   $total_employees = getCount('tbl_employees');
    $total_customers= getCount('tbl_customer');
    $total_orders= getCount('tbl_orders');
+   $total_admins= getCount('tbl_admins');
 
-   $total_sales = "SELECT COALESCE(SUM(sales_person_order_amount),0) as target_achieved FROM tbl_sales_person_target_detail target_detail INNER JOIN tbl_sales_person sales ON target_detail.sales_person_id = sales.sales_person_id ";
-   $total_sales = getRaw($total_sales);
-   $total_sales = $total_sales[0]['target_achieved'];
-
+   
 ?>
 
 <!DOCTYPE html>
@@ -174,6 +172,10 @@ section .section-title {
     height: 120px;
     border-radius: 50%;
 }
+.bg-default{
+  background: #36404e !important;
+}
+
    </style>
 </head>
    <?php require_once('../../include/headerscript.php'); ?>
@@ -200,122 +202,42 @@ section .section-title {
                        <div class="row">
                           
                           <div class="col-md-12 col-xs-12 col-sm-12">
+
+                            <div style="width: 250px;min-height: 100px;height: 150px; margin-left: 10px;padding-top: 30px;" class="col-md-3 col-sm-12 col-xs-12 jumbotron bg-default text-white">
+                              <ul style="list-style-type:none;padding: 0;">
+                                 <li class="text-center"><i style="font-size: 25px;" class="fa fa-user"></i></li>
+                                 <br><li class="text-center">ADMINS</li>
+                                 <li class="text-center"><h3 class="text-white"><?php echo $total_admins; ?></h3></li>
+                              </ul>
+                             </div>
                              
-                             <div style="width: 270px;min-height: 100px;height: 150px; margin-left: 10px;padding-top: 30px;" class="col-md-3 col-sm-12 col-xs-12 jumbotron bg-primary text-white">
+                             <div style="width: 250px;min-height: 100px;height: 150px; margin-left: 10px;padding-top: 30px;" class="col-md-3 col-sm-12 col-xs-12 jumbotron bg-default text-white">
                               <ul style="list-style-type:none;padding: 0;">
                                  <li class="text-center"><i style="font-size: 25px;" class="fa fa-user"></i></li>
+                                 <br><li class="text-center">CUSTOMERS</li>
                                  <li class="text-center"><h3 class="text-white"><?php echo $total_customers; ?></h3></li>
-                                 <li class="text-center">CUSTOMERS</li>
                               </ul>
                              </div>
-                             <div style="width: 270px;min-height: 100px;height: 150px; margin-left: 10px;padding-top: 30px;" class="col-md-3 jumbotron bg-primary text-white">
+
+                             <div style="width: 250px;min-height: 100px;height: 150px; margin-left: 10px;padding-top: 30px;" class="col-md-3 jumbotron bg-default text-white">
                               <ul style="list-style-type:none;padding: 0;">
                                  <li class="text-center"><i style="font-size: 25px;" class="fa fa-user"></i></li>
-                                 <li class="text-center"><h3 class="text-white"><?php echo $total_sales_persons; ?></h3></li>
-                                 <li class="text-center">SALES PERSONS</li>
+                                 <br><li class="text-center">EMPLOYEES</li>
+                                 <li class="text-center"><h3 class="text-white"><?php echo $total_employees; ?></h3></li>
                               </ul>
                              </div>
-                             <div style="width: 270px;min-height: 100px;height: 150px; margin-left: 10px;padding-top: 30px;" class="col-md-3 jumbotron bg-primary text-white">
+                             <div style="width: 250px;min-height: 100px;height: 150px; margin-left: 10px;padding-top: 30px;" class="col-md-3 jumbotron bg-default text-white">
                               <ul style="list-style-type:none;padding: 0;">
                                  <li class="text-center"><i style="font-size: 25px;" class="fa     fa-shopping-cart"></i></li>
+                                 <br><li class="text-center">ORDERS PLACED</li>
                                  <li class="text-center"><h3 class="text-white"><?php echo $total_orders; ?></h3></li>
-                                 <li class="text-center">ORDERS PLACED</li>
-                              </ul>
-                             </div>
-                             <div style="width: 270px;min-height: 100px;height: 150px; margin-left: 10px;padding-top: 30px;" class="col-md-3 jumbotron bg-primary text-white">
-                              <ul style="list-style-type:none;padding: 0;">
-                                 <li class="text-center"><i style="font-size: 25px;" class="fa     fa-rupee"></i></li>
-                                 <li class="text-center"><h3 class="text-white"><?php echo $total_sales; ?></h3></li>
-                                 <li class="text-center">TOTAL SALES</li>
                               </ul>
                              </div>
 
                           </div>
 
                        </div>
-                       <div class="row">
-                           
-                           <?php if(isset($admins)){ ?>
-                              <?php foreach($admins as $rs){ ?>
-                                 <div class="col-xs-12 col-sm-6 col-md-3">
-                                     <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
-                                         <div class="mainflip">
-                                             <div class="frontside">
-                                                 <div class="card">
-                                                     <div class="card-body text-center">
-                                                         <p><img class=" img-fluid" src="../../<?php echo $rs['admin_profile']; ?>" alt="card image"></p>
-                                                         <h4 class="card-title text-primary"><?php echo $rs['admin_name']; ?></h4>
-                                                         <p class="card-text">
-                                                            <ul class="list-group">
-                                                              <li class="list-group-item">
-                                                                 <?php 
-                                                                 $condition = "added_by = '".$rs['admin_id']."' ";
-                                                                 $total_sales_persons = getCountWhere('tbl_sales_person',$condition);
-                                                                 if($total_sales_persons ==0){
-                                                                  echo "<span class='text-danger'>No Sales Person Added</span>";
-                                                                 }else{
-                                                                  echo "Added <span class='text-primary'>".$total_sales_persons."</span> Sales Persons";
-                                                                 }
-                                                                 ?>
-                                                              </li>
-                                                              <li class="list-group-item">
-                                                                 <?php 
-
-                                                                  $condition = "added_by = '".$rs['admin_id']."' ";
-                                                                  $total_customers = getCountWhere('tbl_customer',$condition)."</b>";
-                                                                  if($total_customers ==0){
-                                                                     echo "<span class='text-danger'>No Customers</span>";
-                                                                    }else{
-                                                                     echo "Added <span class='text-primary'>".$total_customers."</span> Customers";
-                                                                    }
-                                                                 ?>
-                                                              </li>
-                                                              <li class="list-group-item">
-                                                                 <?php 
-
-                                                                  $query = "SELECT COUNT(*) as total_orders FROM tbl_orders ord INNER JOIN tbl_sales_person sales ON ord.sales_person_id = sales.sales_person_id WHERE sales.added_by = '".$rs['admin_id']."' ";
-                                                                  $total_orders = getRaw($query);
-                                                                  $total_orders = $total_orders[0]['total_orders'];
-                                                                  if($total_orders ==0){
-                                                                  echo "<span class='text-danger'>No Order Placed Yet</span>";
-                                                                 }else{
-                                                                  echo "Placed <span class='text-primary'>".$total_orders."</span> Orders ";
-                                                                 }
-                                                                 ?>
-                                                              </li>
-                                                              <li class="list-group-item bg-primary">
-                                                                 <?php 
-
-                                                                  $query = "SELECT COALESCE(SUM(sales_person_order_amount),0) as target_achieved FROM tbl_sales_person_target_detail target_detail INNER JOIN tbl_sales_person sales ON target_detail.sales_person_id = sales.sales_person_id WHERE sales.added_by = '".$rs['admin_id']."' ";
-                                                                  $target_achieved = getRaw($query);
-                                                                  if($target_achieved[0]['target_achieved'] == 0){
-                                                                     echo "<span class='text-white'><i class='fa fa-rupee'></i> ".number_format($target_achieved[0]['target_achieved'],2)." </span> of Sales";
-                                                                  }else{
-                                                                     echo "<span class='text-white'><i class='fa fa-rupee'></i> ".number_format($target_achieved[0]['target_achieved'],2)." </span> of Sales";
-                                                                  }
-                                                                 ?>
-                                                              </li>
-                                                            </ul>
-                                                         </p>
-                                                         <!-- <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a> -->
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                             <div class="backside">
-                                                 <div class="card">
-                                                     <div class="card-body text-center mt-4">
-                                                            
-                                                            <a href="../../modules/login/index.php?admin=<?php echo $rs['admin_id']; ?>" style="color:white !important;margin-top: 140px;" class="btn btn-primary text-muted">Sign In as <?php echo $rs['admin_name']; ?></a>                                                         
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                           <?php } ?>
-                        <?php } ?>
-                          
-                       </div>
+                
                    </div>
                </section>
               

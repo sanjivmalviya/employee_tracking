@@ -2,7 +2,7 @@
 
    require_once('../../functions.php');
 
- $login_id = $_SESSION['nb_credentials']['user_id'];
+ $login_id = $_SESSION['ets_credentials']['user_id'];
  $categories = getAll('tbl_category');
 
  if(isset($_GET['delete_category'])){

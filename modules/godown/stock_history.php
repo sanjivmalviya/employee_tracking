@@ -2,7 +2,7 @@
 
 require_once('../../functions.php');
 
-$login_id = $_SESSION['nb_credentials']['user_id'];
+$login_id = $_SESSION['ets_credentials']['user_id'];
 
 $stock_history = "SELECT * FROM tbl_product_stock_history ORDER BY id DESC";
 $stock_history = getRaw($stock_history);

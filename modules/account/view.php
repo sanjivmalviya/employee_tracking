@@ -2,8 +2,8 @@
 
  require_once('../../functions.php');
 
- $login_id = $_SESSION['nb_credentials']['user_id'];
- $login_type = $_SESSION['nb_credentials']['user_type'];
+ $login_id = $_SESSION['ets_credentials']['user_id'];
+ $login_type = $_SESSION['ets_credentials']['user_type'];
 
  $payments = getRaw('SELECT pay.payment_id,cust.customer_id,cust.customer_name,pay.payment_date,pay.payment_mode,pay.payment_amount,pay.payment_bank,pay.payment_utr_number,pay.payment_document,pay.payment_status,pay.payment_remark FROM tbl_payments pay INNER JOIN tbl_customer cust ON pay.customer_id = cust.customer_id WHERE cust.added_by = '.$login_id.' ');
 
