@@ -1,17 +1,11 @@
-
-
 <?php
-
-
 
    require_once('../../functions.php');
 
    $login_id = $_SESSION['ets_credentials']['user_id'];
  
-
    $table_name = 'tbl_vendors';
    $field_name = 'vendor_id';
-
 
    if(isset($_POST['submit'])){
     
@@ -25,118 +19,92 @@
       $vendor_address = $_POST['vendor_address'];
       $vendor_pincode = $_POST['vendor_pincode'];
       $vendor_email = $_POST['vendor_email'];
-      // $vendor_password = $_POST['vendor_password'];
       $vendor_landline = $_POST['vendor_landline'];
       $vendor_mobile = $_POST['vendor_mobile'];
       $vendor_gst = $_POST['vendor_gst'];
-      $vendor_gst_type = $_POST['vendor_gst_type'];
-
-      $upload_dir = '../../uploads/gst/';
-      $extensions = array('jpg','jpeg','png','pdf','doc');   
+      $vendor_gst_type = $_POST['vendor_gst_type'];        
       
-      $vendor_gst_certificate = array();
-      foreach ($_FILES['vendor_gst_certificate']["error"] as $key => $error) {
-
-          if ($error == UPLOAD_ERR_OK) {  
-
-              $tmp_name = $_FILES['vendor_gst_certificate']["tmp_name"][$key];
-              $file_name = $_FILES['vendor_gst_certificate']["name"][$key];
-              $extension = explode('.',$file_name);
-              $file_extension = end($extension);
-
-              if(in_array($file_extension, $extension)){
-                  
-                  $new_file_name = md5(uniqid()).".".$file_extension;             
-                  $destination = $upload_dir.$new_file_name;
-                  if(move_uploaded_file($tmp_name, $destination)){
-                      $vendor_gst_certificate[] = $new_file_name;
-                  }
-              }   
-
-          }
-      }
-
-      if(count($vendor_gst_certificate) > 0){
-          $vendor_gst_certificate = $vendor_gst_certificate[0];
-          // if($sliders['gst_file'] != ""){
-          //     unlink($upload_dir.$sliders['gst_file']);
-          // }
-      }else{
-          $vendor_gst_certificate = "";
-      }
-
       $vendor_mode_of_payment = $_POST['vendor_mode_of_payment'];
-      $vendor_pan = $_POST['vendor_pan'];
-      $vendor_aadhaar = $_POST['vendor_aadhaar'];
-      $upload_dir = '../../uploads/aadhaar/';
-      $extensions = array('jpg','jpeg','png','pdf','doc');   
-      
-      $vendor_aadhaar = array();
-      foreach ($_FILES['vendor_aadhaar']["error"] as $key => $error) {
-
-          if ($error == UPLOAD_ERR_OK) {  
-
-              $tmp_name = $_FILES['vendor_aadhaar']["tmp_name"][$key];
-              $file_name = $_FILES['vendor_aadhaar']["name"][$key];
-              $extension = explode('.',$file_name);
-              $file_extension = end($extension);
-
-              if(in_array($file_extension, $extension)){
-                  
-                  $new_file_name = md5(uniqid()).".".$file_extension;             
-                  $destination = $upload_dir.$new_file_name;
-                  if(move_uploaded_file($tmp_name, $destination)){
-                      $vendor_aadhaar[] = $new_file_name;
-                  }
-              }   
-
-          }
-      }
-
-      if(count($vendor_aadhaar) > 0){
-          $vendor_aadhaar = $vendor_aadhaar[0];
-          // if($sliders['gst_file'] != ""){
-          //     unlink($upload_dir.$sliders['gst_file']);
-          // }
-      }else{
-          $vendor_aadhaar = "";
-      }
+      $vendor_pan = $_POST['vendor_pan'];         
       $vendor_aadhaar_number = $_POST['vendor_aadhaar_number'];
-      
-      $upload_dir = '../../uploads/food_certificate/';
-      $extensions = array('jpg','jpeg','png','pdf','doc');   
-      $vendor_food_license_certificate = array();
-      foreach ($_FILES['vendor_food_license_certificate']["error"] as $key => $error) {
 
-          if ($error == UPLOAD_ERR_OK) {  
+      $vendor_aadhaar = "";
+      if($_FILES['vendor_aadhaar']['error'][0] == 0){
 
-              $tmp_name = $_FILES['vendor_food_license_certificate']["tmp_name"][$key];
-              $file_name = $_FILES['vendor_food_license_certificate']["name"][$key];
-              $extension = explode('.',$file_name);
-              $file_extension = end($extension);
+         // FILE DATA 
+         $file = $_FILES['vendor_aadhaar'];    
+         $allowed_extensions = array('jpg','jpeg','png','gif');
+         $target_path = "../../uploads/aadhaar/";
+         $file_prefix = "IMG_";
+         $upload = file_upload($file,$allowed_extensions,$target_path,$file_prefix);
+        
+         if($upload['error'] == 1){
 
-              if(in_array($file_extension, $extension)){
-                  
-                  $new_file_name = md5(uniqid()).".".$file_extension;             
-                  $destination = $upload_dir.$new_file_name;
-                  if(move_uploaded_file($tmp_name, $destination)){
-                      $vendor_food_license_certificate[] = $new_file_name;
-                  }
-              }   
+               $error = "Failed to Upload files, try again later";
 
-          }
-      }
+         }else{
 
-      if(count($vendor_food_license_certificate) > 0){
-          $vendor_food_license_certificate = $vendor_food_license_certificate[0];
-          // if($sliders['gst_file'] != ""){
-          //     unlink($upload_dir.$sliders['gst_file']);
-          // }
-      }else{
-          $vendor_food_license_certificate = "";
-      }
-      $vendor_credit_limit = $_POST['vendor_credit_limit'];
-      $vendor_credit_limit_days = $_POST['vendor_credit_limit_days'];
+             foreach($upload['files'] as $rs){
+
+                  $vendor_aadhaar = $rs;
+
+             }
+
+         }
+
+       }
+
+      $vendor_gst_certificate = "";
+      if($_FILES['vendor_gst_certificate']['error'][0] == 0){
+
+         // FILE DATA 
+         $file = $_FILES['vendor_gst_certificate'];    
+         $allowed_extensions = array('jpg','jpeg','png','gif');
+         $target_path = "../../uploads/gst_certificate/";
+         $file_prefix = "IMG_";
+         $upload = file_upload($file,$allowed_extensions,$target_path,$file_prefix);
+        
+         if($upload['error'] == 1){
+
+               $error = "Failed to Upload files, try again later";
+
+         }else{
+
+             foreach($upload['files'] as $rs){
+
+                  $vendor_gst_certificate = $rs;
+
+             }
+
+         }
+
+       }
+
+      $vendor_food_license_certificate = "";
+      if($_FILES['vendor_food_license_certificate']['error'][0] == 0){
+
+         // FILE DATA 
+         $file = $_FILES['vendor_food_license_certificate'];    
+         $allowed_extensions = array('jpg','jpeg','png','gif');
+         $target_path = "../../uploads/food_license/";
+         $file_prefix = "IMG_";
+         $upload = file_upload($file,$allowed_extensions,$target_path,$file_prefix);
+        
+         if($upload['error'] == 1){
+
+               $error = "Failed to Upload files, try again later";
+
+         }else{
+
+             foreach($upload['files'] as $rs){
+
+                  $vendor_food_license_certificate = $rs;
+
+             }
+
+         }
+
+       }
 
       $form_data = array(
         'added_by' => $login_id,
@@ -146,20 +114,21 @@
         'vendor_address' => $vendor_address,
         'vendor_pincode' => $vendor_pincode,
         'vendor_email' => $vendor_email,
-        // 'vendor_password' => $vendor_password,
         'vendor_landline' => $vendor_landline,
         'vendor_mobile' => $vendor_mobile,
         'vendor_gst' => $vendor_gst,
         'vendor_gst_type' => $vendor_gst_type,
-        'vendor_gst_certificate' => $vendor_gst_certificate,
         'vendor_mode_of_payment' => $vendor_mode_of_payment,
         'vendor_pan' => $vendor_pan,
-        'vendor_aadhaar' => $vendor_aadhaar,
         'vendor_aadhaar_number' => $vendor_aadhaar_number,
-        'vendor_food_license_certificate' => $vendor_food_license_certificate,
-        'vendor_credit_limit' => $vendor_credit_limit,
-        'vendor_credit_limit_days' => $vendor_credit_limit_days
       );
+
+      if( isset($vendor_aadhaar) && $vendor_aadhaar != ""){
+        $form_data['vendor_aadhaar'] = $vendor_aadhaar;
+      }
+      if( isset($vendor_gst_certificate) && $vendor_gst_certificate != ""){
+        $form_data['vendor_gst_certificate'] = $vendor_gst_certificate;
+      }
 
      if(insert('tbl_vendors',$form_data)){
 
@@ -172,10 +141,10 @@
 
      }
 
+
   }      
 
    if(isset($_GET['edit_id'])){
-
 
 
          $edit_data = getOne($table_name,$field_name,$_GET['edit_id']);
@@ -192,17 +161,10 @@
             'vendor_mobile' => $edit_data['vendor_mobile'],
             'vendor_gst' => $edit_data['vendor_gst'],
             'vendor_gst_type' => $edit_data['vendor_gst_type'],
-            'vendor_gst_certificate' => $edit_data['vendor_gst_certificate'],
             'vendor_mode_of_payment' => $edit_data['vendor_mode_of_payment'],
             'vendor_pan' => $edit_data['vendor_pan'],
-            'vendor_aadhaar' => $edit_data['vendor_aadhaar'],
             'vendor_aadhaar_number' => $edit_data['vendor_aadhaar_number'],
-            'vendor_food_license_certificate' => $edit_data['vendor_food_license_certificate'],
-            'vendor_credit_limit' => $edit_data['vendor_credit_limit'],
-            'vendor_credit_limit_days' => $edit_data['vendor_credit_limit_days']
-
             );
-
 
 
    }
@@ -211,181 +173,92 @@
 
    if(isset($_POST['update'])){
 
+      $vendor_aadhaar = "";
+      if($_FILES['vendor_aadhaar']['error'][0] == 0){
 
+         // FILE DATA 
+         $file = $_FILES['vendor_aadhaar'];    
+         $allowed_extensions = array('jpg','jpeg','png','gif');
+         $target_path = "../../uploads/aadhaar/";
+         $file_prefix = "IMG_";
+         $upload = file_upload($file,$allowed_extensions,$target_path,$file_prefix);
+        
+         if($upload['error'] == 1){
 
-    if(isset($_POST['dealer_deposit'])){
+               $error = "Failed to Upload files, try again later";
 
-      $dealer_deposit = 1;
+         }else{
 
-    }else{     
+             foreach($upload['files'] as $rs){
 
-      $dealer_deposit = 0;
-
-    }
-
-
-
-    if(isset($_POST['dealer_security_cheque'])){
-
-      $dealer_security_cheque = 1;
-
-    }else{     
-
-      $dealer_security_cheque = 0;
-
-    }
-
-
-
-     if($_FILES['vendor_aadhaar']['error'][0] == 0){
-
-
-
-       // FILE DATA 
-
-       $name = $_FILES['vendor_aadhaar'];
-
-       $allowed_extensions = array('jpg','jpeg','png','gif');
-
-       $target_path = "../../uploads/aadhaar/";
-
-       $file_prefix = "IMG_";
-
-       $upload = file_upload($name,$allowed_extensions,$target_path,$file_prefix);
-
-
-
-       if($upload['error'] == 1){
-
-       
-
-           $error = "Failed to Upload files, try again later";
-
-       
-
-       }else{
-
-
-
-           foreach($upload['files'] as $rs){
-
-
-
-               $form_data = array(
-                'vendor_name' => $_POST['vendor_name'],
-                'vendor_code' => $_POST['vendor_code'],
-                'contact_person_name' => $_POST['contact_person_name'],
-                'vendor_address' => $_POST['vendor_address'],
-                'vendor_pincode' => $_POST['vendor_pincode'],
-                'vendor_email' => $_POST['vendor_email'],
-                'vendor_aadhaar' => $rs,
-                // 'vendor_password' => $_POST['vendor_password'],
-                'vendor_landline' => $_POST['vendor_landline'],
-                'vendor_mobile' => $_POST['vendor_mobile'],
-                'vendor_gst' => $_POST['vendor_gst'],
-                'vendor_gst_type' => $_POST['vendor_gst_type'],
-                'vendor_gst_certificate' => $_POST['vendor_gst_certificate'],
-                'vendor_mode_of_payment' => $_POST['vendor_mode_of_payment'],
-                'vendor_pan' => $_POST['vendor_pan'],
-                'vendor_aadhaar' => $_POST['vendor_aadhaar'],
-                'vendor_aadhaar_number' => $_POST['vendor_aadhaar_number'],
-                'vendor_food_license_certificate' => $_POST['vendor_food_license_certificate'],
-                'vendor_credit_limit' => $_POST['vendor_credit_limit'],
-                'vendor_credit_limit_days' => $_POST['vendor_credit_limit_days']
-              );
-
-
-
-               // clear old resource
-
-               $old_vendor_aadhar = getOne('tbl_vendors','vendor_id',$_GET['edit_id']);
-
-               unlink($old_vendor_aadhar['vendor_aadhaar']);
-
-               
-
-               
-
-               if(update('tbl_vendors',$field_name,$_GET['edit_id'],$form_data)){
-
-                   $success = "Vendor Updated Successfully";
-
-//                    echo '<script type="text/javascript">' . "\n";
-// echo 'window.location="../../modules/vendors/add.php?edit_id='.$_GET['edit_id'].' ";';
-// echo '</script>';
-
-               }else{
-
-                   $error = "Failed to update vendor, try again later";
-
-                   unlink($rs);
-
-               }
-
-
-
-           }
-
-
-
-       }
-
-
-
-     }else{
-
-
-
-              $form_data = array(
-                'vendor_name' => $_POST['vendor_name'],
-                'vendor_code' => $_POST['vendor_code'],
-                'contact_person_name' => $_POST['contact_person_name'],
-                'vendor_address' => $_POST['vendor_address'],
-                'vendor_pincode' => $_POST['vendor_pincode'],
-                'vendor_email' => $_POST['vendor_email'],
-                // 'vendor_password' => $_POST['vendor_password'],
-                'vendor_landline' => $_POST['vendor_landline'],
-                'vendor_mobile' => $_POST['vendor_mobile'],
-                'vendor_gst' => $_POST['vendor_gst'],
-                'vendor_gst_type' => $_POST['vendor_gst_type'],
-                'vendor_gst_certificate' => $_POST['vendor_gst_certificate'],
-                'vendor_mode_of_payment' => $_POST['vendor_mode_of_payment'],
-                'vendor_pan' => $_POST['vendor_pan'],
-                'vendor_aadhaar' => $_POST['vendor_aadhaar'],
-                'vendor_aadhaar_number' => $_POST['vendor_aadhaar_number'],
-                'vendor_food_license_certificate' => $_POST['vendor_food_license_certificate'],
-                'vendor_credit_limit' => $_POST['vendor_credit_limit'],
-                'vendor_credit_limit_days' => $_POST['vendor_credit_limit_days']
-
-              );
-
-               
-
-             if(update('tbl_vendors',$field_name,$_GET['edit_id'],$form_data)){
-
-                 $success = "Vendor Updated Successfully";
-
-//                   echo '<script type="text/javascript">' . "\n";
-// echo 'window.location="../../modules/vendors/add.php?edit_id='.$_GET['edit_id'].' ";';
-// echo '</script>';
-
-             }else{
-
-                 $error = "Failed to update vendor, try again later";
+                  $vendor_aadhaar = $rs;
 
              }
 
+         }
 
+       }
 
-     }
+      $vendor_gst_certificate = "";
+      if($_FILES['vendor_gst_certificate']['error'][0] == 0){
+
+         // FILE DATA 
+         $file = $_FILES['vendor_gst_certificate'];    
+         $allowed_extensions = array('jpg','jpeg','png','gif');
+         $target_path = "../../uploads/gst_certificate/";
+         $file_prefix = "IMG_";
+         $upload = file_upload($file,$allowed_extensions,$target_path,$file_prefix);
+        
+         if($upload['error'] == 1){
+
+               $error = "Failed to Upload files, try again later";
+
+         }else{
+
+             foreach($upload['files'] as $rs){
+
+                  $vendor_gst_certificate = $rs;
+
+             }
+
+         }
+
+       }
+
+       $form_data = array(
+        'vendor_name' => $_POST['vendor_name'],
+        'contact_person_name' => $_POST['contact_person_name'],
+        'vendor_address' => $_POST['vendor_address'],
+        'vendor_pincode' => $_POST['vendor_pincode'],
+        'vendor_email' => $_POST['vendor_email'],
+        'vendor_landline' => $_POST['vendor_landline'],
+        'vendor_mobile' => $_POST['vendor_mobile'],
+        'vendor_gst' => $_POST['vendor_gst'],
+        'vendor_gst_type' => $_POST['vendor_gst_type'],
+        'vendor_mode_of_payment' => $_POST['vendor_mode_of_payment'],
+        'vendor_pan' => $_POST['vendor_pan'],
+        'vendor_aadhaar_number' => $_POST['vendor_aadhaar_number'],
+      );
+
+      if( isset($vendor_aadhaar) && $vendor_aadhaar != ""){
+        $form_data['vendor_aadhaar'] = $vendor_aadhaar;
+      }
+      if( isset($vendor_gst_certificate) && $vendor_gst_certificate != ""){
+        $form_data['vendor_gst_certificate'] = $vendor_gst_certificate;
+      }
+ 
+       if(update('tbl_vendors',$field_name,$_GET['edit_id'],$form_data)){
+
+           $success = "Vendor Updated Successfully";
+      
+       }else{
+
+           $error = "Failed to update vendor, try again later";
+
+       }
 
      
-
-
-
    }
-
-
 
 
 
@@ -450,8 +323,6 @@
                   </div>
 
                   <div class="row">   
-
-                     
 
                      <div class="col-sm-12">
 
@@ -565,18 +436,31 @@
                                           </div>
 
                                        </div>
+                                        <div class="col-md-4">
+
+                                          <div class="form-group">
+
+                                             <label for="vendor_mode_of_payment">Mode of Payment</label>
+
+                                             <input name="vendor_mode_of_payment" id="vendor_mode_of_payment" parsley-trigger="change" class="form-control" value="<?php if(isset($edit_data['vendor_gst'])){ echo $edit_data['vendor_mode_of_payment']; } ?>">
+
+                                          </div>
+
+                                       </div>
+
 
                                        <div class="col-md-4">
 
                                           <div class="form-group">
 
-                                             <label for="vendor_gst">Gst No<span class="text-danger">*</span></label>
+                                             <label for="vendor_pan">Pan Number</label>
 
-                                             <input type="text" name="vendor_gst" parsley-trigger="change"  placeholder="" class="form-control" id="vendor_gst" value="<?php if(isset($edit_data['vendor_gst'])){ echo $edit_data['vendor_gst']; } ?>">
+                                             <input type="text" name="vendor_pan" parsley-trigger="change" placeholder="" class="form-control" id="vendor_pan" value="<?php if(isset($edit_data['vendor_pan'])){ echo $edit_data['vendor_pan']; } ?>">
 
                                           </div>
 
                                        </div>
+
 
                                        <div class="col-md-4">
 
@@ -597,6 +481,19 @@
                                        </div>
 
 
+                                       <div class="col-md-4">
+
+                                          <div class="form-group">
+
+                                             <label for="vendor_gst">Gst No</label>
+
+                                             <input type="text" name="vendor_gst" parsley-trigger="change"  placeholder="" class="form-control" id="vendor_gst" value="<?php if(isset($edit_data['vendor_gst'])){ echo $edit_data['vendor_gst']; } ?>">
+
+                                          </div>
+
+                                       </div>
+
+
                                         <div class="col-md-4">
 
                                           <div class="form-group">
@@ -609,33 +506,26 @@
 
                                        </div>
 
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="vendor_mode_of_payment">Mode of Payment</label>
-
-                                             <input name="vendor_mode_of_payment" id="vendor_mode_of_payment" parsley-trigger="change" class="form-control" value="<?php if(isset($edit_data['vendor_gst'])){ echo $edit_data['vendor_mode_of_payment']; } ?>">
-
-                                          </div>
-
-                                       </div>
+                                      
 
                                        <div class="clearfix"></div>
 
+
+                                    
+
                                        <div class="col-md-4">
 
                                           <div class="form-group">
 
-                                             <label for="vendor_pan">Pan Number</label>
+                                             <label for="vendor_aadhaar_number">Aadhaar Number</label>
 
-                                             <input type="text" name="vendor_pan" parsley-trigger="change" placeholder="" class="form-control" id="vendor_pan" value="<?php if(isset($edit_data['vendor_pan'])){ echo $edit_data['vendor_pan']; } ?>">
+                                             <input type="text" name="vendor_aadhaar_number" parsley-trigger="change" placeholder="" class="form-control" id="vendor_aadhaar_number" value="<?php if(isset($edit_data['vendor_aadhaar_number'])){ echo $edit_data['vendor_aadhaar_number']; } ?>">
 
                                           </div>
 
                                        </div>
 
-                                    
+
                                         <div class="col-md-4">
 
                                           <div class="form-group">
@@ -648,60 +538,8 @@
 
                                        </div>
 
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="vendor_aadhaar_number">Aadhaar Number<span class="text-danger">*</span></label>
-
-                                             <input type="text" name="vendor_aadhaar_number" parsley-trigger="change" required="" placeholder="" class="form-control" id="vendor_aadhaar_number" value="<?php if(isset($edit_data['vendor_aadhaar_number'])){ echo $edit_data['vendor_aadhaar_number']; } ?>">
-
-                                          </div>
-
-                                       </div>
                                        <div class="clearfix"></div>
 
-
-
-                                        <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label class="control-label">Upload Food License Certificate </label>
-
-                                             <input type="file" class="filestyle"  name="vendor_food_license_certificate[]" id="vendor_food_license_certificate" value="<?php if(isset($edit_data['vendor_food_license_certificate'])){ echo $edit_data['vendor_food_license_certificate']; } ?>">
-
-                                          </div>
-
-                                       </div>
-
-                               
-
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="vendor_credit_limit">Credit Limit</label>
-
-                                             <input type="number" name="vendor_credit_limit" parsley-trigger="change" placeholder="" class="form-control" id="vendor_credit_limit" value="<?php if(isset($edit_data['vendor_credit_limit'])){ echo $edit_data['vendor_credit_limit']; } ?>">
-
-                                          </div>
-
-                                       </div>
-
-
-
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="vendor_credit_limit_days">Credit Limit in Days</label>
-
-                                             <input type="number" name="vendor_credit_limit_days" parsley-trigger="change" placeholder="" class="form-control" id="vendor_credit_limit_days" value="<?php if(isset($edit_data['vendor_credit_limit_days'])){ echo $edit_data['vendor_credit_limit_days']; } ?>">
-
-                                          </div>
-
-                                       </div>
 
                                     </div>
 

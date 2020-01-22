@@ -58,7 +58,7 @@
                   <div class="row">
                      <div class="col-xs-12">
                         <div class="page-title-box">
-                           <h4 class="page-title">Employee List</h4>
+                           <h4 class="page-title">Employees</h4>
                            <div class="clearfix"></div>
                         </div>
                      </div>
@@ -79,11 +79,9 @@
                                        <th>Employee Code</th>
                                        <th>Designation</th>
                                        <th>Employee Grade</th>
-                                       <th>HQ</th>           
                                        <th>Added at</th>           
                                        <th class="text-center">Pending Leaves</th>           
                                        <th class="text-center">App Access</th>           
-                                       <th>View Detail</th>           
                            				<th class="text-right">Actions</th>
                            			</thead>
 
@@ -103,11 +101,11 @@
                                                 ?> 
                                              </td>
                                              <?php } ?>
-                                             <td><?php echo $rs['employee_name']; ?></td>
+                                             <td><a  
+                                             title="More details about employee" href='detail.php?id=<?php echo $rs['employee_id'];  ?>'><?php echo $rs['employee_name']; ?></a></td>
                                              <td><?php echo $rs['employee_code']; ?></td>
                                              <td><?php echo $rs['employee_designation']; ?></td>
                                              <td><?php echo $rs['employee_grade']; ?></td>
-                                             <td><?php echo $rs['employee_hq']; ?></td>
                                              <td><?php echo $rs['created_at']; ?></td>
                                              <td class="text-center"><?php 
 
@@ -118,7 +116,7 @@
                                                 $total_annual_spent_leaves = "SELECT SUM(total_days) as spent_leaves FROM tbl_employee_grant_leaves WHERE YEAR(created_at) = '$this_year' AND employee_id = '".$rs['employee_id']."' ";
                                                 $total_annual_spent_leaves = getRaw($total_annual_spent_leaves);
                                                 
-                                                if(count($total_annual_leaves) > 0){
+                                                if( isset($total_annual_leaves) && count($total_annual_leaves) > 0){
    
                                                    $pending_leaves = $total_annual_leaves[0]['leaves'] - $total_annual_spent_leaves[0]['spent_leaves'];
                                                    echo "<a href='leave_history.php?id=".$rs['employee_id']."'>".$pending_leaves."</a>";
@@ -130,10 +128,6 @@
                                                 }
                                              ?></td>
                                              <td class="text-center"><?php if($rs['employee_app_access'] == 1){ echo "<span class='text-primary'>Yes</span>"; }else{ echo "<span class='text-danger'>No</span>"; } ?></td>
-                                             <td>
-                                             <a class='btn btn-xs btn-primary'  
-                                             title="More details about employee" href='detail.php?id=<?php echo $rs['employee_id'];  ?>'>Detail</a>
-                                             </td>
                                              <td>
                                                 <a href="add.php?edit_id=<?php echo $rs['employee_id']; ?>"><i class="fa fa-pencil"></i></a>
                                                 <a href="view.php?delete_id=<?php echo $rs['employee_id']; ?>" onclick=" return confirm('Are you sure ?'); "><i class="fa fa-trash"></i></a>

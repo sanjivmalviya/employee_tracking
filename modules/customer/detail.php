@@ -68,7 +68,7 @@
                                        </tr>
                                        <tr>
                                           <td>Contact Person</td>
-                                          <td><?php echo $customer[0]['contact_person']; ?> </td>
+                                          <td><?php echo $customer[0]['contact_person_name']; ?> </td>
                                        </tr>
                                        <tr>
                                           <td>Address</td>
@@ -96,12 +96,12 @@
                                        </tr>
                                        <tr>
                                           <td>GST Type</td>
-                                          <td><?php echo $customer[0]['customer_gst_type']; ?> </td>
+                                          <td><?php if($customer[0]['customer_gst_type'] == '1'){ echo "CGST/SGST"; }else { echo "IGST"; } ?> </td>
                                        </tr>
                                        <?php if($customer[0]['customer_gst_certificate'] != ""){ ?>
                                        <tr>
                                           <td>GST Certificate </td>
-                                          <td><a href="<?php echo "../../uploads/gst/".$customer[0]['customer_gst_certificate']; ?>">View File</a></td>
+                                          <td><a href="<?php echo "../../uploads/gst_certificate/".$customer[0]['customer_gst_certificate']; ?>">View File</a></td>
                                        </tr>
                                        <?php } ?>
                                        <tr>
@@ -122,20 +122,7 @@
                                           <td>Aadhaar Number</td>
                                           <td><?php echo $customer[0]['customer_aadhaar_number']; ?> </td>
                                        </tr>
-                                       <?php if($customer[0]['customer_food_license_certificate'] != ""){ ?>
-                                       <tr>
-                                          <td>Food License Certificate</td>
-                                          <td><a href="<?php echo "../../uploads/food_certificate/".$customer[0]['customer_food_license_certificate']; ?>">View File</a> </td>
-                                       </tr>
-                                       <?php } ?>
-                                       <tr>
-                                          <td>Credit Limit</td>
-                                          <td><?php echo $customer[0]['customer_credit_limit']; ?> </td>
-                                       </tr>
-                                       <tr>
-                                          <td>Credit Limit in Days</td>
-                                          <td><?php echo $customer[0]['customer_credit_limit_days']; ?> </td>
-                                       </tr>
+                                      
                                        
                                        <?php } ?>
 

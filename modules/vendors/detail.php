@@ -68,7 +68,7 @@
                                        </tr>
                                        <tr>
                                           <td>Contact Person</td>
-                                          <td><?php echo $vendor[0]['contact_person']; ?> </td>
+                                          <td><?php echo $vendor[0]['contact_person_name']; ?> </td>
                                        </tr>
                                        <tr>
                                           <td>Address</td>
@@ -121,20 +121,6 @@
                                        <tr>
                                           <td>Aadhaar Number</td>
                                           <td><?php echo $vendor[0]['vendor_aadhaar_number']; ?> </td>
-                                       </tr>
-                                       <?php if($vendor[0]['vendor_food_license_certificate'] != ""){ ?>
-                                       <tr>
-                                          <td>Food License Certificate</td>
-                                          <td><a href="<?php echo "../../uploads/food_certificate/".$vendor[0]['vendor_food_license_certificate']; ?>">View File</a> </td>
-                                       </tr>
-                                       <?php } ?>
-                                       <tr>
-                                          <td>Credit Limit</td>
-                                          <td><?php echo $vendor[0]['vendor_credit_limit']; ?> </td>
-                                       </tr>
-                                       <tr>
-                                          <td>Credit Limit in Days</td>
-                                          <td><?php echo $vendor[0]['vendor_credit_limit_days']; ?> </td>
                                        </tr>
                                        
                                        <?php } ?>

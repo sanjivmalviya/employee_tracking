@@ -10,6 +10,7 @@
 
  $employee = getWhere('tbl_employees','employee_id',$_GET['id']);
 
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -71,10 +72,6 @@
                                           <td><?php echo $employee[0]['employee_designation']; ?> </td>
                                        </tr>
                                        <tr>
-                                          <td>HQ</td>
-                                          <td><?php echo $employee[0]['employee_hq']; ?> </td>
-                                       </tr>
-                                       <tr>
                                           <td>Mobile</td>
                                           <td><?php echo $employee[0]['employee_mobile']; ?> </td>
                                        </tr>
@@ -115,26 +112,6 @@
                                           <td><?php echo $employee[0]['employee_password']; ?> </td>
                                        </tr>
                                        <tr>
-                                          <td>Nominee Name</td>
-                                          <td><?php echo $employee[0]['employee_nominee_name']; ?> </td>
-                                       </tr>
-                                       <tr>
-                                          <td>Nominee Relation</td>
-                                          <td><?php echo $employee[0]['employee_nominee_relation']; ?> </td>
-                                       </tr>
-                                       <tr>
-                                          <td>Spouse Name</td>
-                                          <td><?php echo $employee[0]['employee_spouse_name']; ?> </td>
-                                       </tr>
-                                       <tr>
-                                          <td>Reporting Manager</td>
-                                          <td><?php echo $employee[0]['employee_reporting_manager_id']; ?> </td>
-                                       </tr>
-                                       <tr>
-                                          <td>Department</td>
-                                          <td><?php echo $employee[0]['employee_department_id']; ?> </td>
-                                       </tr>
-                                       <tr>
                                           <td>Bank Name</td>
                                           <td><?php echo $employee[0]['employee_bank_name']; ?> </td>
                                        </tr>
@@ -165,64 +142,7 @@
                                        <tr>
                                           <td>Current Salary</td>
                                           <td><?php echo $employee[0]['employee_salary']; ?> </td>
-                                       </tr>
-                                       <tr class="text-center">
-                                          <td colspan="2"><b>Documents & Attachments</b></td>
-                                       </tr>
-                                       <?php 
-                                          $documents = getOne('tbl_employees_documents','employee_id',$employee[0]['employee_id']);
-                                          if(count($documents) > 0){
-                                       ?>
-                                       <tr>
-                                          <td>Salary Document</td>
-                                          <?php if($documents['salary_document'] != ""){ ?>
-                                          <td><a href="<?php echo "../../uploads/employee/".$documents['salary_document']; ?>">View Document</a> </td>
-                                          <?php }else{ ?>
-                                          <td>N/A</td>
-                                          <?php } ?>
-                                       </tr>
-                                       <tr>
-                                          <td>Appointment Letter</td>
-                                          <?php if($documents['appointment_letter'] != ""){ ?>
-                                          <td><a href="<?php echo "../../uploads/employee/".$documents['appointment_letter']; ?>">View Document</a> </td>
-                                          <?php }else{ ?>
-                                          <td>N/A</td>
-                                          <?php } ?>
-                                       </tr>
-                                       <tr>
-                                          <td>Reliveing Letter</td>
-                                          <?php if($documents['reliveing_letter'] != ""){ ?>
-                                          <td><a href="<?php echo "../../uploads/employee/".$documents['reliveing_letter']; ?>">View Document</a> </td>
-                                          <?php }else{ ?>
-                                          <td>N/A</td>
-                                          <?php } ?>
-                                       </tr>
-                                       <tr>
-                                          <td>Experience Letter</td>
-                                          <?php if($documents['experience_letter'] != ""){ ?>
-                                          <td><a href="<?php echo "../../uploads/employee/".$documents['experience_letter']; ?>">View Document</a> </td>
-                                          <?php }else{ ?>
-                                          <td>N/A</td>
-                                          <?php } ?>
-                                       </tr>
-                                       <tr>
-                                          <td>Confirmation Letter</td>
-                                          <?php if($documents['confirmation_letter'] != ""){ ?>
-                                          <td><a href="<?php echo "../../uploads/employee/".$documents['confirmation_letter']; ?>">View Document</a> </td>
-                                          <?php }else{ ?>
-                                          <td>N/A</td>
-                                          <?php } ?>
-                                       </tr>
-                                       <tr>
-                                          <td>Promotion Letter</td>
-                                          <?php if($documents['promotion_letter'] != ""){ ?>
-                                          <td><a href="<?php echo "../../uploads/employee/".$documents['promotion_letter']; ?>">View Document</a> </td>
-                                          <?php }else{ ?>
-                                          <td>N/A</td>
-                                          <?php } ?>
-                                       </tr>
-                                       <?php } ?>
-
+                                       </tr>                       
                                        <?php } ?>
 
                            			</tbody>

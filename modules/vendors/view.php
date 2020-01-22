@@ -109,7 +109,7 @@
 
                         <div class="page-title-box">
 
-                           <h4 class="page-title">Vendors List</h4>
+                           <h4 class="page-title">Vendors</h4>
 
                            <div class="clearfix"></div>
 
@@ -131,20 +131,17 @@
 
                            		<div class="col-md-12 table-responsive">
 
-                                 <table id="vendors" class="table table-striped table-bordered table-condensed table-hover" style="margin-top: 50px;font-size:12px; ">
+                                 <table id="vendors" class="table table-striped table-bordered table-condensed table-hover" style="margin-top: 50px; ">
                                     
                                     <thead>
                                        <th width="2%">Sr.</th>
-                                       <th width="5%">Name</th>
+                                       <th width="15%">Name</th>
                                        <th width="5%">Vendor Code</th>
-                                       <th width="5%">Contact Person</th>
-                                       <th width="5%">Email</th>
-                                       <th width="5%">Mobile</th>
-                                       <th width="5%">Credit Limit</th>
-                                       <th width="5%">Credit Limit Days</th>
+                                       <th width="10%">Contact Person</th>
+                                       <th width="10%">Email</th>
+                                       <th width="5%">Mobile</th>                                   
                                        <th width="10%">Address</th>
-                                       <th width="2%">Detail</th>
-                                       <th width="10%" class="text-right">Actions</th>
+                                       <th width="10%" class="text-center">Actions</th>
                                     </thead>
 
                                     <tbody>
@@ -156,17 +153,15 @@
                                           <tr>
                                              <td><?php echo $i++; ?></td>
                                              
-                                             <td><?php echo $rs['vendor_name']; ?></td>
+                                             <td><a href="detail.php?id=<?php echo $rs['vendor_id']; ?>" title="More detail about vendor/distributer"><?php echo $rs['vendor_name']; ?></a></td>
                                              <td><?php echo $rs['vendor_code']; ?></td>
-                                              <td widtd="5%"><?php echo $rs['person_name']; ?></td>
+                                              <td widtd="5%"><?php echo $rs['contact_person_name']; ?></td>
                                               <td widtd="5%"><?php echo $rs['vendor_email']; ?></td>
                                               <td widtd="5%"><?php echo $rs['vendor_mobile']; ?></td>
-                                              <td widtd="5%"><?php echo $rs['vendor_credit_limit']; ?></td>
-                                              <td widtd="5%"><?php echo $rs['vendor_credit_limit_days']; ?></td>
+                                      
                                               <td widtd="10%"><?php echo $rs['vendor_address']; ?></td>
-                                              <td><a class="btn btn-primary btn-xs" href="detail.php?id=<?php echo $rs['vendor_id']; ?>" title="More detail about vendor/distributer">Detail</a>
-                                             </td>
-                                             <td>
+                                             
+                                             <td class="text-center">
                                                 <a href="add.php?edit_id=<?php echo $rs['vendor_id']; ?>"><i class="fa fa-pencil"></i></a>
                                                 <a href="view.php?delete_id=<?php echo $rs['vendor_id']; ?>" onclick=" return confirm('Are you sure ?'); "><i class="fa fa-trash"></i></a>
                                              </td>

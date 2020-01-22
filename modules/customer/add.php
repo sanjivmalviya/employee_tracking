@@ -1,8 +1,8 @@
 <?php
-
+  
    require_once('../../functions.php');
 
-   $login_id = $_SESSION['ets_credentials']['user_id'];
+   $login_id = $_SESSION['nb_credentials']['user_id'];
 
    $table_name = 'tbl_customer';
    $field_name = 'customer_id';
@@ -12,20 +12,19 @@
       $next_id = 'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "'.DB.'" AND TABLE_NAME = "tbl_customer" ';
       $next_id = getRaw($next_id);
       $next_id = $next_id[0]['AUTO_INCREMENT'];
-      $customer_code = 'ND/'.sprintf('%05d',($next_id));
+      $customer_code = 'CST/'.sprintf('%05d',($next_id));
 
       $customer_name = $_POST['customer_name'];
       $contact_person_name = $_POST['contact_person_name'];
       $customer_address = $_POST['customer_address'];
       $customer_pincode = $_POST['customer_pincode'];
       $customer_email = $_POST['customer_email'];
-      $customer_password = $_POST['customer_password'];
       $customer_landline = $_POST['customer_landline'];
       $customer_mobile = $_POST['customer_mobile'];
       $customer_gst = $_POST['customer_gst'];
       $customer_gst_type = $_POST['customer_gst_type'];
 
-      $upload_dir = '../../uploads/gst/';
+      $upload_dir = '../../uploads/gst_certificate/';
       $extensions = array('jpg','jpeg','png','pdf','doc');   
       
       $customer_gst_certificate = array();
@@ -52,16 +51,13 @@
 
       if(count($customer_gst_certificate) > 0){
           $customer_gst_certificate = $customer_gst_certificate[0];
-          // if($sliders['gst_file'] != ""){
-          //     unlink($upload_dir.$sliders['gst_file']);
-          // }
       }else{
           $customer_gst_certificate = "";
       }
 
       $customer_mode_of_payment = $_POST['customer_mode_of_payment'];
       $customer_pan = $_POST['customer_pan'];
-      $customer_aadhaar = $_POST['customer_aadhaar'];
+   
       $upload_dir = '../../uploads/aadhaar/';
       $extensions = array('jpg','jpeg','png','pdf','doc');   
       
@@ -89,53 +85,16 @@
 
       if(count($customer_aadhaar) > 0){
           $customer_aadhaar = $customer_aadhaar[0];
-          // if($sliders['gst_file'] != ""){
-          //     unlink($upload_dir.$sliders['gst_file']);
-          // }
       }else{
           $customer_aadhaar = "";
       }
       $customer_aadhaar_number = $_POST['customer_aadhaar_number'];
       
-      $upload_dir = '../../uploads/food_certificate/';
-      $extensions = array('jpg','jpeg','png','pdf','doc');   
-      $customer_food_license_certificate = array();
-      foreach ($_FILES['customer_food_license_certificate']["error"] as $key => $error) {
-
-          if ($error == UPLOAD_ERR_OK) {  
-
-              $tmp_name = $_FILES['customer_food_license_certificate']["tmp_name"][$key];
-              $file_name = $_FILES['customer_food_license_certificate']["name"][$key];
-              $extension = explode('.',$file_name);
-              $file_extension = end($extension);
-
-              if(in_array($file_extension, $extension)){
-                  
-                  $new_file_name = md5(uniqid()).".".$file_extension;             
-                  $destination = $upload_dir.$new_file_name;
-                  if(move_uploaded_file($tmp_name, $destination)){
-                      $customer_food_license_certificate[] = $new_file_name;
-                  }
-              }   
-
-          }
-      }
-
-      if(count($customer_food_license_certificate) > 0){
-          $customer_food_license_certificate = $customer_food_license_certificate[0];
-          // if($sliders['gst_file'] != ""){
-          //     unlink($upload_dir.$sliders['gst_file']);
-          // }
-      }else{
-          $customer_food_license_certificate = "";
-      }
-      $customer_credit_limit = $_POST['customer_credit_limit'];
-      $customer_credit_limit_days = $_POST['customer_credit_limit_days'];
       $customer_security_deposit = $_POST['customer_security_deposit'];
       $customer_bank_name = $_POST['customer_bank_name'];
       $customer_payment_type = $_POST['customer_payment_type'];
       $customer_cheque_number = $_POST['customer_cheque_number'];
-      $customer_additional_details = $_POST['customer_additional_details'];
+      $customer_remarks = $_POST['customer_remarks'];
 
       $form_data = array(
         'added_by' => $login_id,
@@ -144,8 +103,7 @@
         'contact_person_name' => $contact_person_name,
         'customer_address' => $customer_address,
         'customer_pincode' => $customer_pincode,
-        'customer_email' => $customer_email,
-        'customer_password' => $customer_password,
+        'customer_email' => $customer_email,    
         'customer_landline' => $customer_landline,
         'customer_mobile' => $customer_mobile,
         'customer_gst' => $customer_gst,
@@ -155,30 +113,26 @@
         'customer_pan' => $customer_pan,
         'customer_aadhaar' => $customer_aadhaar,
         'customer_aadhaar_number' => $customer_aadhaar_number,
-        'customer_food_license_certificate' => $customer_food_license_certificate,
-        'customer_credit_limit' => $customer_credit_limit,
-        'customer_credit_limit_days' => $customer_credit_limit_days,
         'customer_security_deposit' => $customer_security_deposit,
         'customer_bank_name' => $customer_bank_name,
         'customer_payment_type' => $customer_payment_type,
         'customer_cheque_number' => $customer_cheque_number,
-        'customer_additional_details' => $customer_additional_details
+        'customer_remarks' => $customer_remarks
       );
 
 
      if(insert('tbl_customer',$form_data)){
   
-        // 6 - SEND SMS TO ADMIN THAT YOU HAVE RECIEVED A PAYMENT REQUEST
-        $message = "Your account has been created as Distributer/Customer, Your account username is : ".$customer_email." and password is : ".$customer_password." ";
-        sendSMS($customer_mobile,$message);
+        // // 6 - SEND SMS TO ADMIN THAT YOU HAVE RECIEVED A PAYMENT REQUEST
+        // $message = "Your account has been created as Distributer/Customer, Your account username is : ".$customer_email." and password is : ".$customer_password." ";
+        // sendSMS($customer_mobile,$message);
         
         $success = "Customer Added Successfully";
 
      }else{
 
          $error = "Failed to add Customer, try again later";
-         // unlink($rs);
-
+      
      }
 
   }      
@@ -189,71 +143,30 @@
 
          $edit_data = getOne($table_name,$field_name,$_GET['edit_id']);
 
+         // print_r($edit_data);
+         // exit;
+
          $edit_data = array(
-
-              'party_handled_by' => $edit_data['party_handled_by'], // sales person who handles it 
-
-              'customer_name' => $edit_data['customer_name'], 
-
-              'customer_address' => $edit_data['customer_address'], 
-
-              'customer_at' => $edit_data['customer_at'], 
-
-              'customer_taluka' => $edit_data['customer_taluka'], 
-
-              'customer_district' => $edit_data['customer_district'], 
-
-              'customer_pincode' => $edit_data['customer_pincode'], 
-
-              'customer_email' => $edit_data['customer_email'], 
-
-              'customer_landline' => $edit_data['customer_landline'], 
-
-              'customer_mobile' => $edit_data['customer_mobile'], 
-
-              'customer_gst' => $edit_data['customer_gst'], 
-
-              'customer_gst_type' => $edit_data['customer_gst_type'], 
-              
-              'customer_discount' => $edit_data['customer_discount'], 
-
-              'customer_credit_limit' => $edit_data['customer_credit_limit'], 
-
-              'customer_credit_limit_days' => $edit_data['customer_credit_limit_days'], 
-
-              'customer_mode_of_payment' => $edit_data['customer_mode_of_payment'], 
-
-              'customer_pan' => $edit_data['customer_pan'], 
-
-              'customer_dob' => $edit_data['customer_dob'], 
-
-              'customer_doj' => $edit_data['customer_doj'], 
-
-              'customer_fertilizer_lic' => $edit_data['customer_fertilizer_lic'], 
-
-              'customer_pesticide_lic' => $edit_data['customer_pesticide_lic'], 
-
-              'customer_seed_lic' => $edit_data['customer_seed_lic'], 
-
-              'contact_person_name' => $edit_data['contact_person_name'], 
-
-              'customer_aadhaar_number' => $edit_data['customer_aadhaar_number'], 
-
-              'dealer_deposit' => $edit_data['dealer_deposit'], 
-
-              'dealer_security_cheque' => $edit_data['dealer_security_cheque'], 
-
-              'dealer_amount' => $edit_data['dealer_amount'], 
-
-              'dealer_cheque_number' => $edit_data['dealer_cheque_number'], 
-
-              'dealer_bank_name' => $edit_data['dealer_bank_name'], 
-
-              'dealer_ifsc_code' => $edit_data['dealer_ifsc_code'],
-
-            );
-
-
+              'customer_name' => $edit_data['customer_name'],
+              'contact_person_name' => $edit_data['contact_person_name'],
+              'customer_address' => $edit_data['customer_address'],
+              'customer_pincode' => $edit_data['customer_pincode'],
+              'customer_email' => $edit_data['customer_email'],
+              'customer_landline' => $edit_data['customer_landline'],
+              'customer_mobile' => $edit_data['customer_mobile'],
+              'customer_gst' => $edit_data['customer_gst'],
+              'customer_gst_type' => $edit_data['customer_gst_type'],
+              'customer_gst_certificate' => $edit_data['customer_gst_certificate'],
+              'customer_mode_of_payment' => $edit_data['customer_mode_of_payment'],
+              'customer_pan' => $edit_data['customer_pan'],
+              'customer_aadhaar' => $edit_data['customer_aadhaar'],
+              'customer_aadhaar_number' => $edit_data['customer_aadhaar_number'],
+              'customer_security_deposit' => $edit_data['customer_security_deposit'],
+              'customer_bank_name' => $edit_data['customer_bank_name'],
+              'customer_payment_type' => $edit_data['customer_payment_type'],
+              'customer_cheque_number' => $edit_data['customer_cheque_number'],
+              'customer_remarks' => $edit_data['customer_remarks']
+          );
 
    }
 
@@ -261,271 +174,99 @@
 
    if(isset($_POST['update'])){
 
-
-
-    if(isset($_POST['dealer_deposit'])){
-
-      $dealer_deposit = 1;
-
-    }else{     
-
-      $dealer_deposit = 0;
-
-    }
-
-
-
-    if(isset($_POST['dealer_security_cheque'])){
-
-      $dealer_security_cheque = 1;
-
-    }else{     
-
-      $dealer_security_cheque = 0;
-
-    }
-
-
-
+     $customer_aadhaar_file = "";
      if($_FILES['customer_aadhaar']['error'][0] == 0){
 
-
-
        // FILE DATA 
-
-       $name = $_FILES['customer_aadhaar'];
-
+       $file = $_FILES['customer_aadhaar'];    
        $allowed_extensions = array('jpg','jpeg','png','gif');
-
        $target_path = "../../uploads/aadhaar/";
-
        $file_prefix = "IMG_";
-
-       $upload = file_upload($name,$allowed_extensions,$target_path,$file_prefix);
-
-
-
+       $upload = file_upload($file,$allowed_extensions,$target_path,$file_prefix);
+      
        if($upload['error'] == 1){
 
-       
-
-           $error = "Failed to Upload files, try again later";
-
-       
+             $error = "Failed to Upload files, try again later";
 
        }else{
 
-
-
            foreach($upload['files'] as $rs){
 
-
-
-               $form_data = array(
-
-                'added_by' => $login_id, // current admin id 
-
-                'party_handled_by' => $_POST['party_handled_by'], // sales person who handles it 
-
-                'customer_name' => $_POST['customer_name'], 
-
-                'customer_address' => $_POST['customer_address'], 
-
-                'customer_at' => $_POST['customer_at'], 
-
-                'customer_taluka' => $_POST['customer_taluka'], 
-
-                'customer_district' => $_POST['customer_district'], 
-
-                'customer_pincode' => $_POST['customer_pincode'], 
-
-                'customer_email' => $_POST['customer_email'], 
-
-                'customer_landline' => $_POST['customer_landline'], 
-
-                'customer_mobile' => $_POST['customer_mobile'], 
-
-                'customer_gst' => $_POST['customer_gst'], 
-
-                'customer_gst_type' => $_POST['customer_gst_type'], 
-
-                'customer_credit_limit' => $_POST['customer_credit_limit'], 
-
-                'customer_credit_limit_days' => $_POST['customer_credit_limit_days'], 
-
-                'customer_mode_of_payment' => $_POST['customer_mode_of_payment'], 
-
-                'customer_discount' => $_POST['customer_discount'], 
-
-                'customer_pan' => $_POST['customer_pan'], 
-
-                'customer_dob' => $_POST['customer_dob'], 
-
-                'customer_doj' => $_POST['customer_doj'], 
-
-                'customer_fertilizer_lic' => $_POST['customer_fertilizer_lic'], 
-
-                'customer_pesticide_lic' => $_POST['customer_pesticide_lic'], 
-
-                'customer_seed_lic' => $_POST['customer_seed_lic'], 
-
-                'contact_person_name' => $_POST['contact_person_name'], 
-
-                'customer_aadhaar' => $rs, 
-
-                'customer_aadhaar_number' => $_POST['customer_aadhaar_number'], 
-
-                'dealer_deposit' => $dealer_deposit, 
-
-                'dealer_security_cheque' => $dealer_security_cheque, 
-
-                'dealer_amount' => $_POST['dealer_amount'], 
-
-                'dealer_cheque_number' => $_POST['dealer_cheque_number'], 
-
-                'dealer_bank_name' => $_POST['dealer_bank_name'], 
-
-                'dealer_ifsc_code' => $_POST['dealer_ifsc_code'],
-
-              );
-
-
-
-               // clear old resource
-
-               $old_customer_aadhar = getOne('tbl_customer','customer_id',$_GET['edit_id']);
-
-               unlink($old_customer_aadhar['customer_aadhaar']);
-
-               
-
-               
-
-               if(update('tbl_customer',$field_name,$_GET['edit_id'],$form_data)){
-
-                   $success = "Customer Updated Successfully";
-
-                  echo '<script type="text/javascript">' . "\n";
-                  echo 'window.location="../../modules/customer/view.php";';
-                  echo '</script>';
-
-               }else{
-
-                   $error = "Failed to update Customer, try again later";
-
-                   unlink($rs);
-
-               }
-
-
+                $customer_aadhaar_file = $rs;
 
            }
 
-
-
        }
-
-
-
-     }else{
-
-
-
-              $form_data = array(
-
-                'added_by' => $login_id, // current admin id 
-
-                'party_handled_by' => $_POST['party_handled_by'], // sales person who handles it 
-
-                'customer_name' => $_POST['customer_name'], 
-
-                'customer_address' => $_POST['customer_address'], 
-
-                'customer_at' => $_POST['customer_at'], 
-
-                'customer_taluka' => $_POST['customer_taluka'], 
-
-                'customer_district' => $_POST['customer_district'], 
-
-                'customer_pincode' => $_POST['customer_pincode'], 
-
-                'customer_email' => $_POST['customer_email'], 
-
-                'customer_landline' => $_POST['customer_landline'], 
-
-                'customer_mobile' => $_POST['customer_mobile'], 
-
-                'customer_gst' => $_POST['customer_gst'], 
-
-                'customer_gst_type' => $_POST['customer_gst_type'], 
-
-                'customer_credit_limit' => $_POST['customer_credit_limit'], 
-
-                'customer_credit_limit_days' => $_POST['customer_credit_limit_days'], 
-
-                'customer_mode_of_payment' => $_POST['customer_mode_of_payment'], 
-
-                'customer_discount' => $_POST['customer_discount'], 
-
-                'customer_pan' => $_POST['customer_pan'], 
-
-                'customer_dob' => $_POST['customer_dob'], 
-
-                'customer_doj' => $_POST['customer_doj'], 
-
-                'customer_fertilizer_lic' => $_POST['customer_fertilizer_lic'], 
-
-                'customer_pesticide_lic' => $_POST['customer_pesticide_lic'], 
-
-                'customer_seed_lic' => $_POST['customer_seed_lic'], 
-
-                'contact_person_name' => $_POST['contact_person_name'], 
-
-                'customer_aadhaar_number' => $_POST['customer_aadhaar_number'], 
-
-                'dealer_deposit' => $dealer_deposit, 
-
-                'dealer_security_cheque' => $dealer_security_cheque, 
-
-                'dealer_amount' => $_POST['dealer_amount'], 
-
-                'dealer_cheque_number' => $_POST['dealer_cheque_number'], 
-
-                'dealer_bank_name' => $_POST['dealer_bank_name'], 
-
-                'dealer_ifsc_code' => $_POST['dealer_ifsc_code'],
-
-              );
-
-               
-
-             if(update('tbl_customer',$field_name,$_GET['edit_id'],$form_data)){
-
-                 $success = "Customer Updated Successfully";
-
-                  echo '<script type="text/javascript">' . "\n";
-echo 'window.location="../../modules/customer/view.php";';
-echo '</script>';
-
-             }else{
-
-                 $error = "Failed to update Customer, try again later";
-
-             }
-
-
 
      }
 
-     
+     $customer_gst_certificate = ""; 
+     if($_FILES['customer_gst_certificate']['error'][0] == 0){
+
+       // FILE DATA 
+       $file = $_FILES['customer_gst_certificate'];    
+       $allowed_extensions = array('jpg','jpeg','png','gif');
+       $target_path = "../../uploads/gst_certificate/";
+       $file_prefix = "IMG_";
+       $upload = file_upload($file,$allowed_extensions,$target_path,$file_prefix);
+      
+       if($upload['error'] == 1){
+
+             $error = "Failed to Upload files, try again later";
+
+       }else{
+
+           foreach($upload['files'] as $rs){
+
+                $customer_gst_certificate = $rs;
+
+           }
+
+       }
+
+     }  
 
 
+     $form_data = array(
+        'added_by' => $login_id, // current admin id 
+        'customer_name' => $_POST['customer_name'],
+        'contact_person_name' => $_POST['contact_person_name'],
+        'customer_address' => $_POST['customer_address'],
+        'customer_pincode' => $_POST['customer_pincode'],
+        'customer_email' => $_POST['customer_email'],
+        'customer_landline' => $_POST['customer_landline'],
+        'customer_mobile' => $_POST['customer_mobile'],
+        'customer_gst' => $_POST['customer_gst'],
+        'customer_gst_type' => $_POST['customer_gst_type'],
+        'customer_mode_of_payment' => $_POST['customer_mode_of_payment'],
+        'customer_pan' => $_POST['customer_pan'],
+        'customer_aadhaar_number' => $_POST['customer_aadhaar_number'],
+        'customer_security_deposit' => $_POST['customer_security_deposit'],
+        'customer_bank_name' => $_POST['customer_bank_name'],
+        'customer_payment_type' => $_POST['customer_payment_type'],
+        'customer_cheque_number' => $_POST['customer_cheque_number'],
+        'customer_remarks' => $_POST['customer_remarks'],
+      );
 
+      if( isset($customer_aadhaar_file) && $customer_aadhaar_file != ""){
+        $form_data['customer_aadhaar'] = $customer_aadhaar_file;
+      }
+      if( isset($customer_gst_certificate) && $customer_gst_certificate != ""){
+        $form_data['customer_gst_certificate'] = $customer_gst_certificate;
+      }
+    
+
+       if(update('tbl_customer',$field_name,$_GET['edit_id'],$form_data)){
+
+          $success = "Customer Updated Successfully";
+          
+       }else{
+
+           $error = "Failed to update Customer, try again later";
+           unlink($rs);
+
+       }
    }
-
-
-
-
 
 ?>
 
@@ -631,6 +372,19 @@ echo '</script>';
 
                                           <div class="form-group">
 
+                                             <label for="customer_email">Email <span class="text-danger">*</span></label>
+
+                                             <input type="email" required="" name="customer_email" parsley-trigger="change"  placeholder="" class="form-control" id="customer_email" value="<?php if(isset($edit_data['customer_email'])){ echo $edit_data['customer_email']; } ?>">
+
+                                          </div>
+
+                                       </div>
+
+
+                                       <div class="col-md-4">
+
+                                          <div class="form-group">
+
                                              <label for="customer_address">Address</label>
 
                                              <input type="text" name="customer_address" parsley-trigger="change"  placeholder="" class="form-control" id="customer_addres" value="<?php if(isset($edit_data['customer_address'])){ echo $edit_data['customer_address']; } ?>">
@@ -653,29 +407,6 @@ echo '</script>';
 
                                        </div>
 
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="customer_email">Email <span class="text-danger">*</span></label>
-
-                                             <input type="email" required="" name="customer_email" parsley-trigger="change"  placeholder="" class="form-control" id="customer_email" value="<?php if(isset($edit_data['customer_email'])){ echo $edit_data['customer_email']; } ?>">
-
-                                          </div>
-
-                                       </div>
-
-                                     <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="customer_password">Password<span class="text-danger">*</span> &nbsp;<input type="button" class="btn btn-default btn-xs pull-right generatePassword" value="Generate"></label>
-
-                                             <input type="text" name="customer_password" parsley-trigger="change" required="" placeholder="" class="form-control" id="customer_password" value="<?php if(isset($edit_data['customer_password'])){ echo $edit_data['customer_password']; } ?>">
-
-                                          </div>
-
-                                       </div>
 
 
                                        <div class="col-md-4">
@@ -706,7 +437,7 @@ echo '</script>';
 
                                           <div class="form-group">
 
-                                             <label for="customer_gst">Gst No<span class="text-danger">*</span></label>
+                                             <label for="customer_gst">Gst No</label>
 
                                              <input type="text" name="customer_gst" parsley-trigger="change"  placeholder="" class="form-control" id="customer_gst" value="<?php if(isset($edit_data['customer_gst'])){ echo $edit_data['customer_gst']; } ?>">
 
@@ -737,7 +468,8 @@ echo '</script>';
 
                                           <div class="form-group">
 
-                                             <label class="control-label">Upload GST Certificate</label>
+                                             <label class="control-label">Upload GST Certificate <?php if(isset($edit_data['customer_gst_certificate']) && $edit_data['customer_gst_certificate'] != ""){ ?>
+                                                <a href="<?php echo "../../uploads/gst_certificate/".$edit_data['customer_gst_certificate']; ?>"><i class="fa fa-eye"></i></a> <?php } ?> </label>
 
                                              <input type="file" class="filestyle"  name="customer_gst_certificate[]" id="customer_gst_certificate" value="<?php if(isset($edit_data['customer_gst_certificate'])){ echo $edit_data['customer_gst_certificate']; } ?>">
 
@@ -745,7 +477,34 @@ echo '</script>';
 
                                        </div>
 
+                                       
+                                        <div class="col-md-4">
+
+                                          <div class="form-group">
+
+                                             <label class="control-label">Upload Aadhaar <?php if(isset($edit_data['customer_aadhaar']) && $edit_data['customer_aadhaar'] != ""){ ?>
+                                                <a href="<?php echo "../../uploads/gst_certificate/".$edit_data['customer_aadhaar']; ?>"><i class="fa fa-eye"></i></a> <?php } ?></label>
+
+                                             <input type="file" class="filestyle"  name="customer_aadhaar[]" id="customer_aadhaar" value="<?php if(isset($edit_data['customer_aadhaar'])){ echo $edit_data['customer_aadhaar']; } ?>">
+
+                                          </div>
+
+                                       </div>
+
                                        <div class="col-md-4">
+
+                                          <div class="form-group">
+
+                                             <label for="customer_aadhaar_number">Aadhaar Number</label>
+
+                                             <input type="text" name="customer_aadhaar_number" parsley-trigger="change" placeholder="" class="form-control" id="customer_aadhaar_number" value="<?php if(isset($edit_data['customer_aadhaar_number'])){ echo $edit_data['customer_aadhaar_number']; } ?>">
+
+                                          </div>
+
+                                       </div>
+                                       <div class="clearfix"></div>
+
+                                        <div class="col-md-4">
 
                                           <div class="form-group">
 
@@ -756,8 +515,6 @@ echo '</script>';
                                           </div>
 
                                        </div>
-
-                                       <div class="clearfix"></div>
 
                                        <div class="col-md-4">
 
@@ -770,63 +527,11 @@ echo '</script>';
                                           </div>
 
                                        </div>
-
-                                    
-                                        <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label class="control-label">Upload Aadhaar</label>
-
-                                             <input type="file" class="filestyle"  name="customer_aadhaar[]" id="customer_aadhaar" value="<?php if(isset($edit_data['customer_aadhaar'])){ echo $edit_data['customer_aadhaar']; } ?>">
-
-                                          </div>
-
-                                       </div>
-
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="customer_aadhaar_number">Aadhaar Number<span class="text-danger">*</span></label>
-
-                                             <input type="text" name="customer_aadhaar_number" parsley-trigger="change" required="" placeholder="" class="form-control" id="customer_aadhaar_number" value="<?php if(isset($edit_data['customer_aadhaar_number'])){ echo $edit_data['customer_aadhaar_number']; } ?>">
-
-                                          </div>
-
-                                       </div>
-                                       <div class="clearfix"></div>
-
-
-
-                                        <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label class="control-label">Upload Food License Certificate </label>
-
-                                             <input type="file" class="filestyle"  name="customer_food_license_certificate[]" id="customer_food_license_certificate" value="<?php if(isset($edit_data['customer_food_license_certificate'])){ echo $edit_data['customer_food_license_certificate']; } ?>">
-
-                                          </div>
-
-                                       </div>
-
                                
 
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="customer_credit_limit">Credit Limit</label>
-
-                                             <input type="number" name="customer_credit_limit" parsley-trigger="change" placeholder="" class="form-control" id="customer_credit_limit" value="<?php if(isset($edit_data['customer_credit_limit'])){ echo $edit_data['customer_credit_limit']; } ?>">
-
-                                          </div>
-
-                                       </div>
 
 
-
+<!-- 
                                        <div class="col-md-4">
 
                                           <div class="form-group">
@@ -837,9 +542,8 @@ echo '</script>';
 
                                           </div>
 
-                                       </div>
+                                       </div> -->
 
-                                       <div class="clearfix"></div>
 
                                        <div class="col-md-4">
 
@@ -893,9 +597,8 @@ echo '</script>';
 
                                           <div class="form-group">
 
-                                             <label for="customer_additional_details">Additional Details</label>
-
-                                             <input type="text" name="customer_additional_details" parsley-trigger="change" placeholder="" class="form-control" id="customer_additional_details" value="<?php if(isset($edit_data['customer_additional_details'])){ echo $edit_data['customer_additional_details']; } ?>">
+                                             <label for="customer_remarks">Remarks</label>
+                                             <textarea name="customer_remarks" parsley-trigger="change" placeholder="" class="form-control" id="customer_remarks"><?php if(isset($edit_data['customer_remarks'])){ echo $edit_data['customer_remarks']; } ?></textarea>
 
                                           </div>
 

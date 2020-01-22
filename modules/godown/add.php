@@ -132,8 +132,8 @@
                                        </div>
                                        <div class="col-md-4">
                                           <div class="form-group">
-                                             <label for="godown_person_designation">Godown Person Designation<span class="text-danger">*</span></label>
-                                             <input type="text" name="godown_person_designation" parsley-trigger="change" required=""  class="form-control" id="godown_person_designation" value="<?php if(isset($edit_data['godown_person_designation'])){ echo $edit_data['godown_person_designation']; } ?>">
+                                             <label for="godown_person_designation">Godown Person Designation</label>
+                                             <input type="text" name="godown_person_designation" parsley-trigger="change" class="form-control" id="godown_person_designation" value="<?php if(isset($edit_data['godown_person_designation'])){ echo $edit_data['godown_person_designation']; } ?>">
                                           </div>
                                        </div>               
                                        <div class="clearfix"></div>
@@ -147,7 +147,7 @@
                                        </div>
                                        <div class="col-md-4">
                                           <div class="form-group">
-                                             <label for="godown_email">Email<span class="text-danger">*</span></label>
+                                             <label for="godown_email">Email (Username)<span class="text-danger">*</span></label>
                                              <input type="text" name="godown_email" parsley-trigger="change" required=""  class="form-control" id="godown_email" value="<?php if(isset($edit_data['godown_email'])){ echo $edit_data['godown_email']; } ?>">
                                           </div>
                                        </div>
@@ -160,8 +160,8 @@
                                        </div>
                                        <div class="col-md-4">
                                           <div class="form-group">
-                                             <label for="godown_address">Address<span class="text-danger">*</span></label>
-                                             <input type="text" name="godown_address" parsley-trigger="change" required=""  class="form-control" id="godown_address" value="<?php if(isset($edit_data['godown_address'])){ echo $edit_data['godown_address']; } ?>">
+                                             <label for="godown_address">Address</label>
+                                             <input type="text" name="godown_address" parsley-trigger="change" class="form-control" id="godown_address" value="<?php if(isset($edit_data['godown_address'])){ echo $edit_data['godown_address']; } ?>">
                                           </div>
                                        </div>
                                        <div class="col-md-4">

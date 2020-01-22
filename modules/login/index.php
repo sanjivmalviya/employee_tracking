@@ -156,11 +156,12 @@
                 <div class="row">
                     <div class="col-sm-12">
 
-                        <div class="wrapper-page p-t-30">
+                        <div class="wrapper-page p-t-10">
 
-                            <div class="m-t-40 account-pages" style="background: #0098db !important;">
+                            <div class="m-t-0 account-pages" style="background: #0098db !important;">
                                 <div class="text-center">
-                                    <img src="../../assets/images/logo.png" style="height: 127px;width: 100%;" alt="">
+                                    <img src="https://cdn.pixabay.com/photo/2018/07/27/19/40/tracking-3566710_960_720.jpg" style="width: 100%;" alt="">
+                                    <!-- <h1>ETS</h1> -->
                                 </div>
                                 <div class="account-content">
                                     <form class="form-horizontal" method="post">

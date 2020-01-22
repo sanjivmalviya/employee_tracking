@@ -47,7 +47,7 @@ function insert($table,$form_data){
     (`".implode('`,`', $fields)."`)
 
     VALUES('".implode("','", $form_data)."')";
-
+    
     // run and return the query result resource
 
     return mysqli_query($connect,$sql);
@@ -258,6 +258,9 @@ function isExists($table,$field,$field_value){
 
 function sendSMS($mobile_number,$message){
     
+    // turned off
+    exit;
+
     //Your authentication key
     $authKey = "f148b1948e6be2ddfc5a45c9fbd3323d";
     //Multiple mobiles numbers separated by comma

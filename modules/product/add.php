@@ -24,9 +24,9 @@
 
    if(isset($_POST['submit'])){
 
-    if(!isset($_POST['product_unit'])){
-      $_POST['product_unit'] = "";
-    }
+    // if(!isset($_POST['product_unit'])){
+    //   $_POST['product_unit'] = "";
+    // }
 
     $form_data = array(
 
@@ -145,7 +145,7 @@
 
         // 'product_discount3' => $_POST['product_discount3'],
 
-        'product_unit' => $_POST['product_unit']
+        // 'product_unit' => $_POST['product_unit']
 
       );
 
@@ -227,8 +227,6 @@
                   </div>
 
                   <div class="row">   
-
-                     
 
                      <div class="col-sm-12">
 

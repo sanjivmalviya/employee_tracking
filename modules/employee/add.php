@@ -3,25 +3,19 @@
    require_once('../../functions.php');
 
    $login_id = $_SESSION['ets_credentials']['user_id'];
-
    $table_name = 'tbl_employees';
-
    $field_name = 'employee_id';    
-
-   $reporting_managers = getAll('tbl_employees');
-   $departments = getAll('tbl_departments');
 
    if(isset($_POST['submit'])){
 
     $next_id = 'SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = "'.DB.'" AND TABLE_NAME = "tbl_employees" ';
     $next_id = getRaw($next_id);
     $next_id = $next_id[0]['AUTO_INCREMENT'];
-    $employee_code = 'NE/'.sprintf('%05d',($next_id));
+    $employee_code = 'EMP/'.sprintf('%05d',($next_id));
    
     // POST DATA
     $employee_name = $_POST['employee_name'];
     $employee_designation = $_POST['employee_designation'];
-    $employee_hq = $_POST['employee_hq'];
     $employee_mobile = $_POST['employee_mobile'];
     $employee_doj = $_POST['employee_doj'];
     $employee_dob = $_POST['employee_dob'];
@@ -62,9 +56,6 @@
 
     if(count($aadhaar_file) > 0){
         $aadhaar_file = $aadhaar_file[0];
-        // if($sliders['aadhaar_file'] != ""){
-        //     unlink($upload_dir.$sliders['aadhaar_file']);
-        // }
     }else{
         $aadhaar_file = "";
     }
@@ -73,9 +64,6 @@
     $employee_aadhaar_number = $_POST['employee_aadhaar_number'];
 
     $employee_password = $_POST['employee_password'];
-    $employee_nominee_name = $_POST['employee_nominee_name'];
-    $employee_nominee_relation = $_POST['employee_nominee_relation'];
-    $employee_spouse_name = $_POST['employee_spouse_name'];
 
     $upload_dir = '../../uploads/pan/';
     $extensions = array('jpg','jpeg','png');   
@@ -104,16 +92,11 @@
 
     if(count($employee_pan_file) > 0){
         $employee_pan_file = $employee_pan_file[0];
-        // if($sliders['pan_file'] != ""){
-        //     unlink($upload_dir.$sliders['pan_file']);
-        // }
     }else{
         $employee_pan_file = "";
     }
 
 
-    $employee_reporting_manager_id = $_POST['employee_reporting_manager_id'];
-    $employee_department_id = $_POST['employee_department_id'];
     $employee_bank_name = $_POST['employee_bank_name'];
     $employee_bank_ifsc = $_POST['employee_bank_ifsc'];
     $employee_bank_branch = $_POST['employee_bank_branch'];
@@ -125,7 +108,6 @@
         'employee_name' =>  $employee_name,
         'employee_code' =>  $employee_code,
         'employee_designation' =>  $employee_designation,
-        'employee_hq' =>  $employee_hq,
         'employee_mobile' =>  $employee_mobile,
         'employee_doj' =>  $employee_doj,
         'employee_dob' =>  $employee_dob,
@@ -135,11 +117,6 @@
         'employee_aadhaar_file' =>  $employee_aadhaar_file,
         'employee_aadhaar_number' =>  $employee_aadhaar_number,
         'employee_password' =>  $employee_password,
-        'employee_nominee_name' =>  $employee_nominee_name,
-        'employee_nominee_relation' =>  $employee_nominee_relation,
-        'employee_spouse_name' =>  $employee_spouse_name,
-        'employee_reporting_manager_id' =>  $employee_reporting_manager_id,
-        'employee_department_id' =>  $employee_department_id,
         'employee_bank_name' =>  $employee_bank_name,
         'employee_bank_ifsc' =>  $employee_bank_ifsc,
         'employee_bank_branch' =>  $employee_bank_branch,
@@ -172,21 +149,15 @@
             'added_by' => $login_id,
             'employee_name' => $edit_data['employee_name'],
             'employee_designation' => $edit_data['employee_designation'],
-            'employee_hq' => $edit_data['employee_hq'],
             'employee_mobile' => $edit_data['employee_mobile'],
             'employee_doj' => $edit_data['employee_doj'],
             'employee_dob' => $edit_data['employee_dob'],
             'employee_pan' => $edit_data['employee_pan'],
+            'employee_pan_file' => $edit_data['employee_pan_file'],
             'employee_email' => $edit_data['employee_email'],
-            'aadhaar_file' => $edit_data['aadhaar_file'],
             'employee_aadhaar_file' => $edit_data['employee_aadhaar_file'],
             'employee_aadhaar_number' => $edit_data['employee_aadhaar_number'],
             'employee_password' => $edit_data['employee_password'],
-            'employee_nominee_name' => $edit_data['employee_nominee_name'],
-            'employee_nominee_relation' => $edit_data['employee_nominee_relation'],
-            'employee_spouse_name' => $edit_data['employee_spouse_name'],
-            'employee_reporting_manager_id' => $edit_data['employee_reporting_manager_id'],
-            'employee_department_id' => $edit_data['employee_department_id'],
             'employee_bank_name' => $edit_data['employee_bank_name'],
             'employee_bank_ifsc' => $edit_data['employee_bank_ifsc'],
             'employee_bank_branch' => $edit_data['employee_bank_branch'],
@@ -210,8 +181,6 @@
 
     $employee_mobile = $_POST['employee_mobile'];
 
-    $employee_hq = $_POST['employee_hq'];
-
     $employee_designation = $_POST['employee_designation'];
 
     $employee_pan = $_POST['employee_pan'];
@@ -224,10 +193,6 @@
 
     $employee_password = $_POST['employee_password'];
 
-    $employee_spouse_name = $_POST['employee_spouse_name'];
-
-    // $employee_spouse_mobile = $_POST['employee_spouse_mobile'];
-
     $employee_aadhaar_number = $_POST['employee_aadhaar_number'];
 
 
@@ -237,155 +202,101 @@
       $employee_app_access = 0;
     }
 
-
-     // FILE DATA 
-
-     $name = $_FILES['employee_aadhaar_file'];
-
-     $allowed_extensions = array('jpg','jpeg','png','gif','pdf');
-
-     $target_path = "../../uploads/aadhaar/";
-
-     $file_prefix = "IMG_";
-
-     $upload = file_upload($name,$allowed_extensions,$target_path,$file_prefix);
-     
-
+    $employee_aadhaar_file = "";
     if($_FILES['employee_aadhaar_file']['error'][0] == 0){
 
+       // FILE DATA 
+       $file = $_FILES['employee_aadhaar_file'];    
+       $allowed_extensions = array('jpg','jpeg','png','gif');
+       $target_path = "../../uploads/aadhaar/";
+       $file_prefix = "IMG_";
+       $upload = file_upload($file,$allowed_extensions,$target_path,$file_prefix);
+      
+       if($upload['error'] == 1){
 
-     if($upload['error'] == 1){
+             $error = "Failed to Upload files, try again later";
 
-         $error = "Failed to Upload files, try again later";
+       }else{
 
-     }else{
+           foreach($upload['files'] as $rs){
 
-         foreach($upload['files'] as $rs){
+                $employee_aadhaar_file = $rs;
 
-             $form_data = array(
+           }
 
-               'added_by' => $login_id,
+       }
 
-               'employee_name' => $_POST['employee_name'],
+    }
 
-               'employee_designation' => $_POST['employee_designation'],
+    $employee_pan_file = "";
+    if($_FILES['employee_pan_file']['error'][0] == 0){
 
-               'employee_hq' => $_POST['employee_hq'],
+       // FILE DATA 
+       $file = $_FILES['employee_pan_file'];    
+       $allowed_extensions = array('jpg','jpeg','png','gif');
+       $target_path = "../../uploads/pan/";
+       $file_prefix = "IMG_";
+       $upload = file_upload($file,$allowed_extensions,$target_path,$file_prefix);
+      
+       if($upload['error'] == 1){
+             $error = "Failed to Upload files, try again later";
+       }else{
+           foreach($upload['files'] as $rs){
+                $employee_pan_file = $rs;
+           }
+       }
 
-               'employee_mobile' => $_POST['employee_mobile'],
+    }     
 
-               'employee_doj' => $_POST['employee_doj'],
+     $form_data = array(
 
-               'employee_dob' => $_POST['employee_dob'],
+       'added_by' => $login_id,
 
-               'employee_pan' => $_POST['employee_pan'],
+       'employee_name' => $_POST['employee_name'],
 
-               'employee_email' => $_POST['employee_email'],
+       'employee_designation' => $_POST['employee_designation'],
 
-               'employee_aadhaar' => substr($rs,6),
+       'employee_mobile' => $_POST['employee_mobile'],
 
-               'employee_aadhaar_number' => $_POST['employee_aadhaar_number'],
+       'employee_doj' => $_POST['employee_doj'],
 
-               'employee_password' => $_POST['employee_password'],
+       'employee_dob' => $_POST['employee_dob'],
 
-               'employee_spouse_name' => $_POST['employee_spouse_name'],
+       'employee_pan' => $_POST['employee_pan'],
 
-               'employee_spouse_mobile' => $_POST['employee_spouse_mobile'],
+       'employee_email' => $_POST['employee_email'],
 
-               'employee_app_access' => $employee_app_access,
-               'employee_travel_rate' => $_POST['employee_travel_rate']
+       'employee_aadhaar_number' => $_POST['employee_aadhaar_number'],
 
-             );
+       'employee_password' => $_POST['employee_password'],
 
+       'employee_app_access' => $employee_app_access,
 
-             // clear old resource
+       'employee_travel_rate' => $_POST['employee_travel_rate'],
+       
+       'employee_total_leaves' => $_POST['employee_total_leaves'],
 
-             $old_employee_aadhaar = getOne($table_name,$field_name,$_GET['edit_id']);
 
-             $old_employee_aadhaar['employee_aadhaar'];
+     );
 
-             unlink("../../".$old_employee_aadhaar['employee_aadhaar']);
+      if( isset($employee_aadhaar_file) && $employee_aadhaar_file != ""){
+        $form_data['employee_aadhaar_file'] = $employee_aadhaar_file;
+      }
+      if( isset($employee_pan_file) && $employee_pan_file != ""){
+        $form_data['employee_pan_file'] = $employee_pan_file;
+      }
+      
+      if(update($table_name,$field_name,$_GET['edit_id'],$form_data)){
 
+           $success = "Employee Updated Successfully";
 
-             if(update($table_name,$field_name,$_GET['edit_id'],$form_data)){
+       }else{
 
-                   $success = "Employee Updated Successfully";
+           $error = "Failed to update Employee, try again later";
 
-               }else{
-
-                   $error = "Failed to update Employee, try again later";
-
-                   unlink($rs);
-
-               }
-
-
-
-         }
-
-
-
-     }
-
-     }else{
-
-
-          $form_data = array(
-
-           'added_by' => $login_id,
-
-           'employee_name' => $_POST['employee_name'],
-
-           'employee_designation' => $_POST['employee_designation'],
-
-           'employee_hq' => $_POST['employee_hq'],
-
-           'employee_mobile' => $_POST['employee_mobile'],
-
-           'employee_doj' => $_POST['employee_doj'],
-
-           'employee_dob' => $_POST['employee_dob'],
-
-           'employee_pan' => $_POST['employee_pan'],
-
-           'employee_email' => $_POST['employee_email'],
-
-           'employee_aadhaar_number' => $_POST['employee_aadhaar_number'],
-
-           'employee_password' => $_POST['employee_password'],
-
-           'employee_spouse_name' => $_POST['employee_spouse_name'],
-
-           // 'employee_spouse_mobile' => $_POST['employee_spouse_mobile'],
-           
-           'employee_app_access' => $employee_app_access,
-           'employee_travel_rate' => $_POST['employee_travel_rate'],
-
-         );
-
-
-         if(update($table_name,$field_name,$_GET['edit_id'],$form_data)){
-
-             $success = "Employee Updated Successfully";
-
-         }else{
-
-             $error = "Failed to update Employee, try again later";
-
-         }
-
-
-
-     }
-
-     
-
-
+       }
 
    }
-
-
-
 
 
 ?>
@@ -487,21 +398,20 @@
                                              <input type="number" name="employee_mobile" parsley-trigger="change" required="" placeholder="" class="form-control" id="employee_mobile" value="<?php if(isset($edit_data['employee_mobile'])){ echo $edit_data['employee_mobile']; } ?>">
 
                                           </div>
+                                        </div>
 
-                                       </div>
-
-                                       <div class="col-md-4">
+                                        <div class="col-md-4">
 
                                           <div class="form-group">
 
-                                             <label for="employee_hq">HQ</label>
+                                             <label for="employee_email">Email<span class="text-danger">*</span></label>
 
-                                             <input type="text" name="employee_hq" parsley-trigger="change" placeholder="" class="form-control" id="employee_hq" value="<?php if(isset($edit_data['employee_hq'])){ echo $edit_data['employee_hq']; } ?>">
+                                             <input type="email" name="employee_email" parsley-trigger="change" required="" placeholder="" class="form-control" id="employee_email" value="<?php if(isset($edit_data['employee_email'])){ echo $edit_data['employee_email']; } ?>">
 
                                           </div>
 
                                        </div>
-
+                                    
                                        <div class="col-md-4">
 
                                           <div class="form-group">
@@ -518,11 +428,11 @@
 
                                           <div class="form-group">
 
-                                             <label>DOJ <span class="text-danger">*</span></label>
+                                             <label>DOJ</label>
 
                                              <div class="input-group">
 
-                                                <input type="date" required="" class="form-control" placeholder="mm/dd/yyyy" id="employee_doj" value="<?php if(isset($edit_data['employee_doj'])){ echo date('Y-m-d',strtotime($edit_data['employee_doj'])); } ?>" name="employee_doj" >
+                                                <input type="date" class="form-control" placeholder="mm/dd/yyyy" id="employee_doj" value="<?php if(isset($edit_data['employee_doj']) && $edit_data['employee_doj'] != ""){ echo date('Y-m-d',strtotime($edit_data['employee_doj'])); } ?>" name="employee_doj" >
 
                                                 <span class="input-group-addon bg-custom b-0"><i class="mdi mdi-calendar text-white"></i></span>
 
@@ -536,11 +446,11 @@
 
                                           <div class="form-group">
 
-                                             <label>DOB <span class="text-danger">*</span></label>
+                                             <label>DOB</label>
 
                                              <div class="input-group">
 
-                                                <input type="date" required="" class="form-control" placeholder="mm/dd/yyyy" name="employee_dob" id="employee_dob" value="<?php if(isset($edit_data['employee_dob'])){ echo date('Y-m-d',strtotime($edit_data['employee_dob'])); } ?>" >
+                                                <input type="date" class="form-control" placeholder="mm/dd/yyyy" name="employee_dob" id="employee_dob" value="<?php if(isset($edit_data['employee_dob']) && $edit_data['employee_dob']!=""){ echo date('Y-m-d',strtotime($edit_data['employee_dob'])); } ?>" >
 
                                                 <span class="input-group-addon bg-custom b-0"><i class="mdi mdi-calendar text-white"></i></span>
 
@@ -550,17 +460,7 @@
 
                                        </div>
 
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="employee_email">Email<span class="text-danger">*</span></label>
-
-                                             <input type="email" name="employee_email" parsley-trigger="change" required="" placeholder="" class="form-control" id="employee_email" value="<?php if(isset($edit_data['employee_email'])){ echo $edit_data['employee_email']; } ?>">
-
-                                          </div>
-
-                                       </div>
+                                       
 
                                         <div class="col-md-4">
 
@@ -579,60 +479,9 @@
 
                                           <div class="form-group">
 
-                                             <label for="employee_nominee_name">Nominee Name</label>
+                                             <label for="employee_total_leaves">Employee Total Leaves</label>
 
-                                             <input type="text" name="employee_nominee_name" parsley-trigger="change" placeholder="" class="form-control" id="employee_nominee_name" value="<?php if(isset($edit_data['employee_nominee_name'])){ echo $edit_data['employee_nominee_name']; } ?>">
-
-                                          </div>
-
-                                       </div>
-
-                                                                              <div class="clearfix"> </div>
-
-
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="employee_nominee_relation">Nominee Relation</label>
-
-                                             <input type="text" name="employee_nominee_relation" parsley-trigger="change" placeholder="" class="form-control" id="employee_nominee_relation" value="<?php if(isset($edit_data['employee_nominee_relation'])){ echo $edit_data['employee_nominee_relation']; } ?>">
-
-                                          </div>
-
-                                       </div>
-
-
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="employee_spouse_name">Spouse Name</label>
-
-                                             <input type="text" name="employee_spouse_name" parsley-trigger="change" placeholder="" class="form-control" id="employee_spouse_name" value="<?php if(isset($edit_data['employee_spouse_name'])){ echo $edit_data['employee_spouse_name']; } ?>">
-
-                                          </div>
-
-                                       </div>
-
-
-
-                                        <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="employee_reporting_manager_id">Reporting Manager</label>
-
-                                             <select name="employee_reporting_manager_id" parsley-trigger="change" placeholder="" class="form-control" id="employee_reporting_manager_id" value="<?php if(isset($edit_data['employee_reporting_manager_id'])){ echo $edit_data['employee_reporting_manager_id']; } ?>">
-                                              <option value="">--Select Reporting Manager--</option>
-                                              <?php if(isset($reporting_managers)){ ?>
-                                                  <?php foreach($reporting_managers as $rs){ ?>
-
-                                                    <option <?php if(isset($edit_data['employee_reporting_manager_id']) && $edit_data['employee_reporting_manager_id'] == $rs['employee_id']){ echo "selected"; } ?> value="<?php echo $rs['employee_id'] ?>"><?php echo $rs['employee_name'] ?></option>
-
-                                                  <?php } ?>
-                                              <?php } ?>
-                                             </select>
+                                             <input type="number" parsley-trigger="change" placeholder="" class="form-control" name="employee_total_leaves" id="employee_total_leaves" value="<?php if(isset($edit_data['employee_total_leaves'])){ echo $edit_data['employee_total_leaves']; } ?>">
 
                                           </div>
 
@@ -642,30 +491,7 @@
 
                                           <div class="form-group">
 
-                                             <label for="employee_department_id">Department <span class="text-danger">*</span></label>
-
-                                             <select name="employee_department_id" parsley-trigger="change" placeholder="" class="form-control" id="employee_department_id" value="<?php if(isset($edit_data['employee_department_id'])){ echo $edit_data['employee_department_id']; } ?>" required="">
-                                              <option value="">--Select Department--</option>
-                                              <?php if(isset($departments)){ ?>
-                                                  <?php foreach($departments as $rs){ ?>
-
-                                                    <option <?php if(isset($edit_data['employee_department_id']) && $edit_data['employee_department_id'] == $rs['department_id']){ echo "selected"; } ?> value="<?php echo $rs['department_id'] ?>"><?php echo $rs['department_name'] ?></option>
-
-                                                  <?php } ?>
-                                              <?php } ?>
-                                             </select>
-
-                                          </div>
-
-                                       </div>
-                                       
-
-
-                                       <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="employee_aadhaar_number">Adhar Number</label>
+                                             <label for="employee_aadhaar_number">Adhaar Number</label>
 
                                              <input type="text" parsley-trigger="change" placeholder="" class="form-control" name="employee_aadhaar_number" id="employee_aadhaar_number" value="<?php if(isset($edit_data['employee_aadhaar_number'])){ echo $edit_data['employee_aadhaar_number']; } ?>">
 
@@ -673,12 +499,13 @@
 
                                        </div>
 
-
+<div class="clearfix"></div>
                                        <div class="col-md-4">
 
                                           <div class="form-group">
 
-                                             <label class="control-label">Upload Aadhaar</label>
+                                             <label class="control-label">Upload Aadhaar <?php if(isset($edit_data['employee_aadhaar_file']) && $edit_data['employee_aadhaar_file'] != ""){ ?>
+                                                <a href="<?php echo "../../uploads/aadhaar/".$edit_data['employee_aadhaar_file']; ?>"><i class="fa fa-eye"></i></a> <?php } ?></label>
 
                                              <input type="file" class="filestyle" data-buttonname="btn-default" name="employee_aadhaar_file[]" id="employee_aadhaar_file" >
 
@@ -691,7 +518,7 @@
 
                                           <div class="form-group">
 
-                                             <label for="employee_pan">PAN Number</label>
+                                             <label for="employee_pan">PAN Number </label>
 
                                              <input type="text" parsley-trigger="change" placeholder="" class="form-control" name="employee_pan" id="employee_pan" value="<?php if(isset($edit_data['employee_pan'])){ echo $edit_data['employee_pan']; } ?>">
 
@@ -703,21 +530,10 @@
 
                                           <div class="form-group">
 
-                                             <label class="control-label">Upload PAN</label>
+                                             <label class="control-label">Upload PAN <?php if(isset($edit_data['employee_pan_file']) && $edit_data['employee_pan_file'] != ""){ ?>
+                                                <a href="<?php echo "../../uploads/pan/".$edit_data['employee_pan_file']; ?>"><i class="fa fa-eye"></i></a> <?php } ?></label>
 
                                              <input type="file" class="filestyle" data-buttonname="btn-default" name="employee_pan_file[]" id="employee_pan_file" >
-
-                                          </div>
-
-                                       </div>
-
-                                        <div class="col-md-4">
-
-                                          <div class="form-group">
-
-                                             <label for="employee_total_leaves">Employee Total Leaves</label>
-
-                                             <input type="number" parsley-trigger="change" placeholder="" class="form-control" name="employee_total_leaves" id="employee_total_leaves" value="<?php if(isset($edit_data['employee_total_leaves'])){ echo $edit_data['employee_total_leaves']; } ?>">
 
                                           </div>
 
@@ -784,18 +600,21 @@
 
                                              <label for="employee_travel_rate">Travel Rate (Per KM)</label>
 
-                                             <input type="number" parsley-trigger="change" placeholder="" class="form-control" name="employee_travel_rate" id="employee_travel_rate" value="<?php if(isset($edit_data['employee_travel_rate'])){ echo $edit_data['employee_travel_rate']; } ?>" required>
+                                             <input type="number" parsley-trigger="change" placeholder="" class="form-control" name="employee_travel_rate" id="employee_travel_rate" value="<?php if(isset($edit_data['employee_travel_rate'])){ echo $edit_data['employee_travel_rate']; } ?>">
 
                                           </div>
 
                                        </div>
-                                       <div class="clearfix"> </div>    
+                                       <div class="clearfix"> </div>
+                                       <div class="col-md-12">
+                                        <h5>Mobile Application : </h5>
+                                       </div>    
 
-                                       <div class="col-md-4 p-t-30">
+                                       <div class="col-md-4">
                                          
-                                          <div class="checkbox-control">
+                                          <div class="checkbox">
                                         
-                                             <input type="checkbox" name="employee_app_access" id="employee_app_access" <?php if($edit_data['employee_app_access'] == '1'){ echo "checked"; } ?>> <label for="employee_app_access">Allow App Access</label>
+                                             <input type="checkbox" name="employee_app_access" id="employee_app_access" <?php if( isset($edit_data['employee_app_access']) && $edit_data['employee_app_access'] == '1'){ echo "checked"; } ?>> <label for="employee_app_access"> <span style="line-height: 25px;font-size: 15px;" >Allow App Access</span></label>
                                        
                                           </div>
                                        
